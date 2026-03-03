@@ -1,6 +1,6 @@
 #include "ImGUILayer.hpp"
 
-ui::ImGUILayer::ImGUILayer(const float &fps) : _fps(fps) {
+ui::ImGUILayer::ImGUILayer() {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGui::StyleColorsDark();

@@ -6,7 +6,7 @@ namespace ui {
 
 class ImGUILayer {
     public:
-        ImGUILayer(const float &fps);
+        ImGUILayer();
         ~ImGUILayer() { this->shutdown(); };
 
         void beginFrame(float delta_time, float width, float height);
