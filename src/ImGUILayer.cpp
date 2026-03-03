@@ -1,30 +1,42 @@
 #include "ImGUILayer.hpp"
 
-bool ui::ImGUILayer::initWithRenderer(void *native_window, void *gl_context) {
+bool ui::ImGUILayer::init() {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGui::StyleColorsDark();
 
-    ImGui_ImplSDL2_InitForOpenGL(
-        static_cast<SDL_Window*>(native_window),
-        gl_context
-    );
-    ImGui_ImplOpenGL3_Init("#version 450");
+    ImGuiIO& io = ImGui::GetIO();
+
+    // Create custom backends
+    io.BackendPlatformName = "CustomCore";
+    io.BackendRendererName = "CustomRenderer";
 
     return true;
 }
 
-void ui::ImGUILayer::beginFrame() {
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplSDL2_NewFrame();
+void ui::ImGUILayer::beginFrame(float delta_time, float width, float height) {
+    ImGuiIO& io = ImGui::GetIO();
+
+    io.DeltaTime = delta_time > 0.0f ? delta_time : 1.0f / getFps();
+    io.DisplaySize = ImVec2(width, height);
+
     ImGui::NewFrame();
 }
 
-// void ui::ImGUILayer::endFrame() {
-// }
+/*
+UIRenderData &ui::ImGUILayer::getFrame() {
+    ImGui::Render();
+    ImDrawData* drawData = ImGui::GetDrawData();
+    return convertToUIRenderData(drawData);
+}
+
+UIRenderData &ui::ImGUILayer::convertToUIRenderData(ImDrawData *drawData) {
+
+}
+
+*/
 
 void ui::ImGUILayer::shutdown() {
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
 }
+

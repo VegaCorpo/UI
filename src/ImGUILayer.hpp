@@ -1,24 +1,29 @@
 #pragma once
 
-#include "backends/imgui_impl_opengl3.h"
-// Sur Linux : imgui_impl_x11 ou imgui_impl_sdl2 selon ce que Godot utilise
-// Sur Windows : imgui_impl_win32
-#include "backends/imgui_impl_sdl2.h"
-#include <SDL2/SDL.h>
-
-// #include "UIRenderData.hpp" le fichier core contenant le type de buffer
+#include <imgui.h>
 
 namespace ui {
 
-    class ImGUILayer {
-        public:
-            ~ImGUILayer() = default;
+class ImGUILayer {
+    public:
+        ImGUILayer(const float &fps) : _fps(fps) {}
+        ~ImGUILayer() = default;
 
-            bool initWithRenderer(void *native_window, void *gl_context);
+        bool init();
+        void beginFrame(float delta_time, float width, float height);
 
-            void beginFrame();
-            // UIRenderData  endFrame(); envoie le buffer ajouter les types de buffer dans le core
-            void shutdown();
+        // Methods to implement after creation of renderer protocol
+        /*
+        UIRenderData &getFrame();
+        UIRenderData &convertToUIRenderData(ImDrawData *drawData);
+        */
+        void shutdown();
 
+        const float &getFps() { return this->_fps; }
+        void setFps(const float &fps) { _fps = fps; }
+
+        private:
+            float _fps;
     };
+
 } // namespace ui
