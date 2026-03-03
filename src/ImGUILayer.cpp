@@ -15,7 +15,7 @@ ui::ImGUILayer::ImGUILayer(const float &fps) : _fps(fps) {
 void ui::ImGUILayer::beginFrame(float delta_time, float width, float height) {
     ImGuiIO& io = ImGui::GetIO();
 
-    io.DeltaTime = delta_time > 0.0f ? delta_time : 1.0f / getFps();
+    io.DeltaTime = delta_time > 0.0f ? delta_time : 1.0f / this->_fps;
     io.DisplaySize = ImVec2(width, height);
 
     ImGui::NewFrame();
