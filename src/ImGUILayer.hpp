@@ -6,10 +6,9 @@ namespace ui {
 
 class ImGUILayer {
     public:
-        ImGUILayer(const float &fps) : _fps(fps) {}
-        ~ImGUILayer() = default;
+        ImGUILayer(const float &fps);
+        ~ImGUILayer() { shutdown(); };
 
-        bool init();
         void beginFrame(float delta_time, float width, float height);
 
         // Methods to implement after creation of renderer protocol
@@ -18,9 +17,6 @@ class ImGUILayer {
         UIRenderData &convertToUIRenderData(ImDrawData *drawData);
         */
         void shutdown();
-
-        const float &getFps() { return this->_fps; }
-        void setFps(const float &fps) { _fps = fps; }
 
         private:
             float _fps;

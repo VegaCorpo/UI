@@ -1,6 +1,6 @@
 #include "ImGUILayer.hpp"
 
-bool ui::ImGUILayer::init() {
+ui::ImGUILayer::ImGUILayer(const float &fps) : _fps(fps) {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGui::StyleColorsDark();
@@ -10,8 +10,6 @@ bool ui::ImGUILayer::init() {
     // Create custom backends
     io.BackendPlatformName = "CustomCore";
     io.BackendRendererName = "CustomRenderer";
-
-    return true;
 }
 
 void ui::ImGUILayer::beginFrame(float delta_time, float width, float height) {
