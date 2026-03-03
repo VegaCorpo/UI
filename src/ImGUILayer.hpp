@@ -1,10 +1,9 @@
 #pragma once
 
-#include "imgui.h"
-#include "imgui_impl_opengl3.h"
+#include "backends/imgui_impl_opengl3.h"
 // Sur Linux : imgui_impl_x11 ou imgui_impl_sdl2 selon ce que Godot utilise
 // Sur Windows : imgui_impl_win32
-#include "imgui_impl_sdl2.h"
+#include "backends/imgui_impl_sdl2.h"
 #include <SDL2/SDL.h>
 
 // #include "UIRenderData.hpp" le fichier core contenant le type de buffer
