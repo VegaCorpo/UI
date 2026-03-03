@@ -1,15 +1,57 @@
 cmake_minimum_required(VERSION 3.14)
 
-file(GLOB_RECURSE src CONFIGURE_DEPENDS "*.cpp")
-file(GLOB_RECURSE common_src CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/common/src/*.cpp")
+project(orbital_ui)
 
-add_library(orbital_ui SHARED ${src} ${common_src})
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+set(CMAKE_CXX_STANDARD 20 CACHE STRING "C++ standard")
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CPM_USE_LOCAL_PACKAGES ON)
+
+include(cmake/CPM.cmake)
+CPMUsePackageLock(package-lock.cmake)
+CPMGetPackage("ImGui")
+
+if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release")
+endif()
+
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if (MSVC)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zi /Od")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /DEBUG")
+    else()
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g3 -O0")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -g3 -O0")
+    endif()
+endif()
+
+if (CMAKE_BUILD_TYPE STREQUAL "Asan")
+    if (MSVC)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zi /Od")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /DEBUG")
+    else()
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g3 -O0 -fsanitize=address")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -g3 -O0 -fsanitize=address")
+    endif()
+endif()
+
+add_library(imgui_core STATIC
+    ${CPM_PACKAGE_imgui_SOURCE_DIR}/imgui.cpp
+    ${CPM_PACKAGE_imgui_SOURCE_DIR}/imgui_draw.cpp
+    ${CPM_PACKAGE_imgui_SOURCE_DIR}/imgui_tables.cpp
+    ${CPM_PACKAGE_imgui_SOURCE_DIR}/imgui_widgets.cpp
+)
+
+add_library(orbital_ui SHARED
+    src/UIEngine.cpp
+)
 
 target_link_libraries(orbital_ui PRIVATE imgui_core)
 
-target_include_directories(orbital_ui PRIVATE
-    ${IMGUI_GLOBAL_DIR}
-    ${CMAKE_SOURCE_DIR}/common/include
+target_include_directories(imgui_core PUBLIC
+    ${CPM_PACKAGE_imgui_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
