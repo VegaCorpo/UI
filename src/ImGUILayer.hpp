@@ -17,9 +17,6 @@ class ImGUILayer {
         UIRenderData &convertToUIRenderData(ImDrawData *drawData);
         */
         void shutdown();
-
-        private:
-            float _fps;
     };
 
 } // namespace ui
