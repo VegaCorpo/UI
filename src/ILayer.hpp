@@ -11,9 +11,9 @@ namespace ui {
             virtual void beginFrame(float deltaTime, float width, float height) = 0;
 
             // Returns the universal render buffer for the current frame
-            virtual RenderDrawData &getFrame() = 0;
+            virtual RenderDrawData& getFrame() = 0;
 
             // Shutdown / cleanup
             virtual void shutdown() = 0;
     };
-}
+} // namespace ui
