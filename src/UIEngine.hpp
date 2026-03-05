@@ -1,23 +1,20 @@
 #pragma once
 
-#include <cstdint>
-#include <vector>
-
-#include "ILayer.hpp"
+#include "IUIEngine.hpp"
 
 namespace ui {
 
     // Core UI engine interface responsible for generating render data.
-    class UIEngine {
+    class UIEngine : public IUIEngine {
         public:
 
             ~UIEngine() = default;
 
             // Method to set Layer according the GUI you want to use
-            void setLayer(ILayer *layer) { _layer = layer; }
+            void setLayer(ILayer *layer) override { this->_layer = layer; }
 
-            void update(float dt, float w, float h);
-
+            // Update UI frame and convert it for the renderer
+            void update(float dt, float w, float h) override;
 
         private:
 

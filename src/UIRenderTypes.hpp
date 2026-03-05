@@ -4,7 +4,7 @@
 #include <vector>
 
 namespace ui {
-    // Represents a single vertex used for UI rendering (triangles).
+    // Represents a single vertex used for rendering (triangles).
     struct Vertex {
 
         // Screen-space position of the vertex
@@ -12,7 +12,7 @@ namespace ui {
         float y;
 
         // Texture coordinates (UV mapping)
-        // Used to sample a texture (font atlas, icons, UI images, etc.)
+        // Used to sample a texture (font atlas, icons, images, etc.)
         // Range is [0, 1].
         float u;
         float v;
