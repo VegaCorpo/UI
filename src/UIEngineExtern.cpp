@@ -5,7 +5,7 @@
 
 extern "C++" {
 
-    std::unique_ptr<ui::IUIEngine> get_engine()
+    std::unique_ptr<common::IUIEngine> get_engine()
     {
         ImGui::DebugLog("Debug from ImGui");
         return std::make_unique<ui::UIEngine>();

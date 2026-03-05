@@ -9,8 +9,8 @@ CPMDeclarePackage(ImGui
 
 #Common
 CPMDeclarePackage(Common
-    GIT_TAG main
     GITHUB_REPOSITORY VegaCorpo/Common
+    GIT_TAG ImplementVertex
     SYSTEM YES
     EXCLUDE_FROM_ALL YES
     DOWNLOAD_ONLY YES

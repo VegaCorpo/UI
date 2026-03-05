@@ -23,14 +23,14 @@ void ui::ImGUILayer::beginFrame(float delta_time, float width, float height)
     ImGui::NewFrame();
 }
 
-ui::RenderDrawData& ui::ImGUILayer::getFrame()
+common::RenderDataBuffer& ui::ImGUILayer::getFrame()
 {
     ImGui::Render();
     ImDrawData* drawData = ImGui::GetDrawData();
     return convertToUIRenderData(drawData);
 }
 
-ui::RenderDrawData& ui::ImGUILayer::convertToUIRenderData(ImDrawData* drawData)
+common::RenderDataBuffer& ui::ImGUILayer::convertToUIRenderData(ImDrawData* drawData)
 {
 
     this->_buffer.vertices.clear();
@@ -57,7 +57,7 @@ void ui::ImGUILayer::shutdown()
 void ui::ImGUILayer::recoverVertex(ImDrawList& cmdList)
 {
     for (size_t j = 0; j < cmdList.VtxBuffer.size(); j += 1) {
-        Vertex vertex{};
+        common::Vertex vertex{};
         vertex.x = cmdList.VtxBuffer[j].pos.x;
         vertex.y = cmdList.VtxBuffer[j].pos.y;
         vertex.u = cmdList.VtxBuffer[j].uv.x;
@@ -77,7 +77,7 @@ void ui::ImGUILayer::recoverIndices(ImDrawList& cmdList, uint32_t vertexOffset)
 void ui::ImGUILayer::recoverCommands(ImDrawList& cmdList)
 {
     for (size_t j = 0; j < cmdList.CmdBuffer.size(); j += 1) {
-        DrawCmd drawCmd{};
+        common::DrawCmd drawCmd{};
         drawCmd.indexOffset = cmdList.CmdBuffer[j].IdxOffset + static_cast<uint32_t>(_buffer.indices.size());
         drawCmd.elementCount = cmdList.CmdBuffer[j].ElemCount;
         drawCmd.textureID = cmdList.CmdBuffer[j].GetTexID();

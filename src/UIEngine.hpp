@@ -1,26 +1,26 @@
 #pragma once
 
-#include "IUIEngine.hpp"
+#include "interfaces/IUIEngine.hpp"
 
 namespace ui {
 
     // Core UI engine interface responsible for generating render data.
-    class UIEngine : public IUIEngine {
+    class UIEngine : public common::IUIEngine {
         public:
             ~UIEngine() = default;
 
             // Method to set Layer according the GUI you want to use
-            void setLayer(ILayer* layer) override { this->_layer = layer; }
+            void setLayer(common::ILayer* layer) override { this->_layer = layer; }
 
             // Update UI frame and convert it for the renderer
             void update(float dt, float w, float h) override;
 
         private:
             // Internal buffer containing all UI geometry and commands
-            RenderDrawData _renderBuffer;
+            common::RenderDataBuffer _renderBuffer;
 
             // Layer depending on the GUI you want to use
-            ILayer* _layer = nullptr;
+            common::ILayer* _layer = nullptr;
     };
 
 } // namespace ui
