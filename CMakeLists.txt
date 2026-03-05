@@ -12,6 +12,8 @@ set(CPM_USE_LOCAL_PACKAGES ON)
 include(cmake/CPM.cmake)
 CPMUsePackageLock(package-lock.cmake)
 CPMGetPackage("ImGui")
+CPMGetPackage("Common")
+
 
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
@@ -48,11 +50,12 @@ add_library(orbital_ui SHARED
     src/UIEngine.cpp
 )
 
-target_link_libraries(orbital_ui PRIVATE imgui_core)
+target_link_libraries(orbital_ui PRIVATE Common imgui_core)
 
 target_include_directories(imgui_core PUBLIC
     ${CPM_PACKAGE_imgui_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${Common_SOURCE_DIR}/include
 )
 
 if(WIN32)
