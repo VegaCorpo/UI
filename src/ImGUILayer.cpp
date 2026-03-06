@@ -1,5 +1,7 @@
 #include "ImGUILayer.hpp"
 
+#include <iostream>
+
 ui::ImGUILayer::ImGUILayer()
 {
     IMGUI_CHECKVERSION();
@@ -11,6 +13,9 @@ ui::ImGUILayer::ImGUILayer()
     // Create custom backends
     io.BackendPlatformName = "CustomCore";
     io.BackendRendererName = "CustomRenderer";
+
+    // Setp Global style
+    this->_setupStyle();
 }
 
 void ui::ImGUILayer::beginFrame(float delta_time, float width, float height)
@@ -25,6 +30,7 @@ void ui::ImGUILayer::beginFrame(float delta_time, float width, float height)
 
 common::RenderDataBuffer& ui::ImGUILayer::getFrame()
 {
+    this->_mainMenu();
     ImGui::Render();
     ImDrawData* drawData = ImGui::GetDrawData();
     return convertToUIRenderData(drawData);
@@ -39,12 +45,12 @@ common::RenderDataBuffer& ui::ImGUILayer::convertToUIRenderData(ImDrawData* draw
     for (size_t i = 0; i < drawData->CmdListsCount; i += 1) {
         ImDrawList* cmdList = drawData->CmdLists[i];
 
-        recoverVertex(*cmdList);
+        _recoverVertex(*cmdList);
 
         uint32_t vertexOffset = _buffer.vertices.size() - cmdList->VtxBuffer.size();
-        recoverIndices(*cmdList, vertexOffset);
+        _recoverIndices(*cmdList, vertexOffset);
 
-        recoverCommands(*cmdList);
+        _recoverCommands(*cmdList);
     }
     return this->_buffer;
 }
@@ -54,7 +60,7 @@ void ui::ImGUILayer::shutdown()
     ImGui::DestroyContext();
 }
 
-void ui::ImGUILayer::recoverVertex(ImDrawList& cmdList)
+void ui::ImGUILayer::_recoverVertex(ImDrawList& cmdList)
 {
     for (size_t j = 0; j < cmdList.VtxBuffer.size(); j += 1) {
         common::Vertex vertex{};
@@ -67,14 +73,14 @@ void ui::ImGUILayer::recoverVertex(ImDrawList& cmdList)
     }
 }
 
-void ui::ImGUILayer::recoverIndices(ImDrawList& cmdList, uint32_t vertexOffset)
+void ui::ImGUILayer::_recoverIndices(ImDrawList& cmdList, uint32_t vertexOffset)
 {
     for (size_t j = 0; j < cmdList.IdxBuffer.size(); j += 1) {
         this->_buffer.indices.push_back(cmdList.IdxBuffer[j] + vertexOffset);
     }
 }
 
-void ui::ImGUILayer::recoverCommands(ImDrawList& cmdList)
+void ui::ImGUILayer::_recoverCommands(ImDrawList& cmdList)
 {
     for (size_t j = 0; j < cmdList.CmdBuffer.size(); j += 1) {
         common::DrawCmd drawCmd{};
@@ -87,4 +93,44 @@ void ui::ImGUILayer::recoverCommands(ImDrawList& cmdList)
         drawCmd.clipW = cmdList.CmdBuffer[j].ClipRect.w;
         this->_buffer.commands.push_back(drawCmd);
     }
+}
+
+void ui::ImGUILayer::_setupStyle()
+{
+    ImGuiStyle& style = ImGui::GetStyle();
+
+    style.WindowRounding = 6.0f;
+    style.FrameRounding = 4.0f;
+    style.ScrollbarRounding = 6.0f;
+    style.WindowBorderSize = 1.0f;
+
+    ImVec4* colors = ImGui::GetStyle().Colors;
+
+    // Temp Colors to test if its correct
+    colors[ImGuiCol_WindowBg] = ImVec4(0.1f, 0.1f, 0.12f, 1.0f);
+    colors[ImGuiCol_Button] = ImVec4(0.2f, 0.3f, 0.6f, 1.0f);
+    colors[ImGuiCol_ButtonHovered] = ImVec4(0.3f, 0.4f, 0.8f, 1.0f);
+    colors[ImGuiCol_ButtonActive] = ImVec4(0.1f, 0.2f, 0.5f, 1.0f);
+}
+
+void ui::ImGUILayer::_mainMenu()
+{
+    ImGuiIO& io = ImGui::GetIO();
+
+    float width = io.DisplaySize.x * 0.25f;
+    float height = io.DisplaySize.y;
+
+    ImGui::SetNextWindowPos(ImVec2(0, 0));
+    ImGui::SetNextWindowSize(ImVec2(width, height));
+
+    ImGui::Begin("Main Menu", nullptr,
+                 ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+    ImGui::Text("Orbital Engine");
+    ImGui::Separator();
+    ImGui::Text("Test main menu sayin he loves Axel !");
+    if (ImGui::Button("Place holders Button"))
+        std::cout << "First Button Pressed !" << std::endl;
+    if (ImGui::Button("Second Place holders Button"))
+        std::cout << "Second Button Pressed !" << std::endl;
+    ImGui::End();
 }
