@@ -2,11 +2,11 @@
 
 #include <imgui.h>
 
-#include "interfaces/ILayer.hpp"
+#include "ILayer.hpp"
 
 namespace ui {
 
-    class ImGUILayer : public common::ILayer {
+    class ImGUILayer : public ui::ILayer {
         public:
             ImGUILayer();
             ~ImGUILayer() override { this->shutdown(); };
