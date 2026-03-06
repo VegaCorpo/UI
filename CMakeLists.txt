@@ -58,7 +58,6 @@ target_include_directories(imgui_core PUBLIC
     ${CPM_PACKAGE_imgui_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${Common_SOURCE_DIR}/include
-    ${Common_SOURCE_DIR}/interfaces
 )
 
 if(WIN32)
