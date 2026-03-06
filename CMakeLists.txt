@@ -46,6 +46,7 @@ add_library(imgui_core STATIC
     ${CPM_PACKAGE_imgui_SOURCE_DIR}/imgui_widgets.cpp
 )
 
+
 add_library(orbital_ui SHARED
     src/UIEngineExtern.cpp
     src/UIEngine.cpp
@@ -58,7 +59,6 @@ target_include_directories(imgui_core PUBLIC
     ${CPM_PACKAGE_imgui_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${Common_SOURCE_DIR}/include
-    ${Common_SOURCE_DIR}/interfaces
 )
 
 if(WIN32)
