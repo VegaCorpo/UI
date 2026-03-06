@@ -38,7 +38,6 @@ common::RenderDataBuffer& ui::ImGUILayer::getFrame()
 
 common::RenderDataBuffer& ui::ImGUILayer::convertToUIRenderData(ImDrawData* drawData)
 {
-
     this->_buffer.vertices.clear();
     this->_buffer.indices.clear();
     this->_buffer.commands.clear();
