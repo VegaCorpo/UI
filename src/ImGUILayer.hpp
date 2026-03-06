@@ -2,20 +2,20 @@
 
 #include <imgui.h>
 
-#include "ILayer.hpp"
+#include "interfaces/ILayer.hpp"
 
 namespace ui {
 
-    class ImGUILayer : public ILayer {
+    class ImGUILayer : public common::ILayer {
         public:
             ImGUILayer();
             ~ImGUILayer() { this->shutdown(); };
 
             void beginFrame(float delta_time, float width, float height) override;
 
-            RenderDrawData& getFrame() override;
+            common::RenderDataBuffer& getFrame() override;
 
-            RenderDrawData& convertToUIRenderData(ImDrawData* drawData);
+            common::RenderDataBuffer& convertToUIRenderData(ImDrawData* drawData);
 
             void shutdown() override;
 
@@ -24,7 +24,7 @@ namespace ui {
             void recoverIndices(ImDrawList& cmdList, uint32_t vertexOffset);
             void recoverCommands(ImDrawList& cmdList);
 
-            RenderDrawData _buffer;
+            common::RenderDataBuffer _buffer;
     };
 
 } // namespace ui
