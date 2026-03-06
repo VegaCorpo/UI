@@ -9,7 +9,7 @@ namespace ui {
     class ImGUILayer : public common::ILayer {
         public:
             ImGUILayer();
-            ~ImGUILayer() { this->shutdown(); };
+            ~ImGUILayer() override { this->shutdown(); };
 
             void beginFrame(float delta_time, float width, float height) override;
 
@@ -20,10 +20,17 @@ namespace ui {
             void shutdown() override;
 
         private:
-            void recoverVertex(ImDrawList& cmdList);
-            void recoverIndices(ImDrawList& cmdList, uint32_t vertexOffset);
-            void recoverCommands(ImDrawList& cmdList);
 
+            // Convert Methods
+            void _recoverVertex(ImDrawList& cmdList);
+            void _recoverIndices(ImDrawList& cmdList, uint32_t vertexOffset);
+            void _recoverCommands(ImDrawList& cmdList);
+
+            // GUI Interface Methods
+            void _setupStyle();
+            void _mainMenu();
+            
+            // Private Attributs
             common::RenderDataBuffer _buffer;
     };
 
