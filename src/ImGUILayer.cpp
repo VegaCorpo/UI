@@ -14,7 +14,7 @@ ui::ImGUILayer::ImGUILayer()
     io.BackendPlatformName = "CustomCore";
     io.BackendRendererName = "CustomRenderer";
 
-    // Setp Global style
+    // Setup Global style
     this->_setupStyle();
 }
 
@@ -45,12 +45,12 @@ common::RenderDataBuffer& ui::ImGUILayer::convertToUIRenderData(ImDrawData* draw
     for (size_t i = 0; i < drawData->CmdListsCount; i += 1) {
         ImDrawList* cmdList = drawData->CmdLists[i];
 
-        _recoverVertex(*cmdList);
+        this->_recoverVertex(*cmdList);
 
         uint32_t vertexOffset = _buffer.vertices.size() - cmdList->VtxBuffer.size();
-        _recoverIndices(*cmdList, vertexOffset);
+        this->_recoverIndices(*cmdList, vertexOffset);
 
-        _recoverCommands(*cmdList);
+        this->_recoverCommands(*cmdList);
     }
     return this->_buffer;
 }
