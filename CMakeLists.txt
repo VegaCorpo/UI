@@ -52,12 +52,12 @@ add_library(orbital_ui SHARED
     src/ImGUILayer.cpp
 )
 
-target_link_libraries(orbital_ui PRIVATE Common imgui_core)
+target_link_libraries(orbital_ui PRIVATE imgui_core Common)
 
+target_include_directories(imgui_core  PUBLIC )
 target_include_directories(imgui_core PUBLIC
     ${CPM_PACKAGE_imgui_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/src
-    ${Common_SOURCE_DIR}/include
 )
 
 if(WIN32)
