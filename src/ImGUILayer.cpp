@@ -72,12 +72,13 @@ void ui::ImGUILayer::shutdown()
 
 ImTextureID ui::ImGUILayer::uploadFontTexture(unsigned char *pixels, int width, int height)
 {
-    Image fontImage = {};
-    fontImage.data    = pixels;
-    fontImage.width   = width;
-    fontImage.height  = height;
-    fontImage.mipmaps = 1;
-    fontImage.format  = PIXELFORMAT_UNCOMPRESSED_R8G8B8A8;
+    Image fontImage {
+        pixels,
+        width,
+        height,
+        1,
+        PIXELFORMAT_UNCOMPRESSED_R8G8B8A8
+    };
 
     this->_fontTexture = LoadTextureFromImage(fontImage);
     return (ImTextureID)(intptr_t)this->_fontTexture.id;
