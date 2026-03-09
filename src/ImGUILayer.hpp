@@ -21,7 +21,7 @@ namespace ui {
             void shutdown() override;
 
             // This methods is actually used for Raylib API
-            // If you's using another one, change its content according your Render API
+            // If you are using another one, change its content according your Render API
             ImTextureID uploadFontTexture(unsigned char *pixels, int width, int height) override;
 
         private:
