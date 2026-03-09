@@ -3,6 +3,7 @@
 #include "interfaces/IUIEngine.hpp"
 #include "ILayer.hpp"
 #include <memory>
+#include <types/RenderDataBuffer.hpp>
 
 namespace ui {
 
@@ -11,11 +12,13 @@ namespace ui {
         public:
             ~UIEngine() = default;
 
+            void init() override;
             
             // Update UI frame and convert it for the renderer
             void update(float dt, float w, float h) override;
             
-            void init() override;
+            common::RenderDataBuffer getDataBuffer() override { return this->_renderBuffer; }
+
             
         private:
 
