@@ -15,7 +15,7 @@ void ui::UIEngine::_initWithLayer()
     static_assert(std::is_base_of_v<ui::ILayer, TLayer>,
         "TLayer must inherit from ui::ILayer");
 
-    _setLayer(std::make_unique<TLayer>());
+    this->_setLayer(std::make_unique<TLayer>());
 }
 
 void ui::UIEngine::_setLayer(std::unique_ptr<ui::ILayer> layer)
