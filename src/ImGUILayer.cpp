@@ -1,9 +1,11 @@
 #include "ImGUILayer.hpp"
 
 #include <iostream>
+#include "imgui.h"
 
 ui::ImGUILayer::ImGUILayer()
 {
+    this->_isShutdown = false;
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGui::StyleColorsDark();
@@ -13,6 +15,12 @@ ui::ImGUILayer::ImGUILayer()
     // Create custom backends
     io.BackendPlatformName = "CustomCore";
     io.BackendRendererName = "CustomRenderer";
+
+    unsigned char* pixels = nullptr;
+    int width = 0, height = 0;
+    io.Fonts->SetTexID(this->uploadFontTexture(pixels, width, height));
+
+    io.Fonts->ClearTexData();
 
     // Setup Global style
     this->_setupStyle();
@@ -56,7 +64,24 @@ common::RenderDataBuffer& ui::ImGUILayer::convertToUIRenderData(ImDrawData* draw
 
 void ui::ImGUILayer::shutdown()
 {
-    ImGui::DestroyContext();
+    UnloadTexture(this->_fontTexture);
+    if (ImGui::GetCurrentContext() != nullptr)
+        ImGui::DestroyContext();
+    this->_isShutdown = true;
+}
+
+ImTextureID ui::ImGUILayer::uploadFontTexture(unsigned char *pixels, int width, int height)
+{
+    Image fontImage {
+        pixels,
+        width,
+        height,
+        1,
+        PIXELFORMAT_UNCOMPRESSED_R8G8B8A8
+    };
+
+    this->_fontTexture = LoadTextureFromImage(fontImage);
+    return (ImTextureID)(intptr_t)this->_fontTexture.id;
 }
 
 void ui::ImGUILayer::_recoverVertex(ImDrawList& cmdList)
