@@ -9,15 +9,22 @@ void ui::UIEngine::update(float dt, float w, float h)
     }
 }
 
-void ui::UIEngine::setLayer(std::unique_ptr<ui::ILayer> layer)
+template<typename TLayer>
+void ui::UIEngine::_initWithLayer()
+{
+    static_assert(std::is_base_of_v<ui::ILayer, TLayer>,
+        "TLayer must inherit from ui::ILayer");
+
+    _setLayer(std::make_unique<TLayer>());
+}
+
+void ui::UIEngine::_setLayer(std::unique_ptr<ui::ILayer> layer)
 {
     this->_layer = std::move(layer);
 }
 
-template<typename TLayer = ui::ImGUILayer>
-void init()
+void ui::UIEngine::init()
 {
-    static_assert(std::is_base_of_v<ui::ILayer, TLayer>,
-        "TLayer must inherit from ui::ILayer");
-    setLayer(std::make_unique<TLayer>());
+    // Init Layer with ImGUILayer
+    this->_initWithLayer<ImGUILayer>();
 }

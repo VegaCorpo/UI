@@ -11,15 +11,18 @@ namespace ui {
         public:
             ~UIEngine() = default;
 
-            // Method to set Layer according the GUI you want to use
-            void setLayer(std::unique_ptr<ui::ILayer> layer);
-
+            
             // Update UI frame and convert it for the renderer
             void update(float dt, float w, float h) override;
-
+            
             void init() override;
-
+            
         private:
+
+            template<typename TLayer>
+            void _initWithLayer();
+            // Method to set Layer according the GUI you want to use
+            void _setLayer(std::unique_ptr<ui::ILayer> layer);
             // Internal buffer containing all UI geometry and commands
             common::RenderDataBuffer _renderBuffer;
 
