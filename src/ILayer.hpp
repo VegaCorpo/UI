@@ -1,5 +1,6 @@
 #pragma once
 
+#include "imgui.h"
 #include "types/RenderDataBuffer.hpp"
 
 namespace ui {
@@ -15,5 +16,8 @@ namespace ui {
 
             // Shutdown / cleanup
             virtual void shutdown() = 0;
+
+            // Return ImTexture allowing your Renderer API to create ImGUI Font (depending on your Renderer)
+            virtual ImTextureID uploadFontTexture(unsigned char *pixels, int width, int height) = 0;
     };
 } // namespace ui

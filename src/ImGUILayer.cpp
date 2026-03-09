@@ -1,9 +1,11 @@
 #include "ImGUILayer.hpp"
 
 #include <iostream>
+#include "imgui.h"
 
 ui::ImGUILayer::ImGUILayer()
 {
+    this->_isShutdown = false;
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGui::StyleColorsDark();
@@ -16,18 +18,7 @@ ui::ImGUILayer::ImGUILayer()
 
     unsigned char* pixels = nullptr;
     int width = 0, height = 0;
-    io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height);
-
-    Image fontImage = {};
-    fontImage.data    = pixels;
-    fontImage.width   = width;
-    fontImage.height  = height;
-    fontImage.mipmaps = 1;
-    fontImage.format  = PIXELFORMAT_UNCOMPRESSED_R8G8B8A8;
-
-    this->_fontTexture = LoadTextureFromImage(fontImage);
-
-    io.Fonts->SetTexID((ImTextureID)(intptr_t)this->_fontTexture.id);
+    io.Fonts->SetTexID(this->uploadFontTexture(pixels, width, height));
 
     io.Fonts->ClearTexData();
 
@@ -76,6 +67,20 @@ void ui::ImGUILayer::shutdown()
     UnloadTexture(this->_fontTexture);
     if (ImGui::GetCurrentContext() != nullptr)
         ImGui::DestroyContext();
+    this->_isShutdown = true;
+}
+
+ImTextureID ui::ImGUILayer::uploadFontTexture(unsigned char *pixels, int width, int height)
+{
+    Image fontImage = {};
+    fontImage.data    = pixels;
+    fontImage.width   = width;
+    fontImage.height  = height;
+    fontImage.mipmaps = 1;
+    fontImage.format  = PIXELFORMAT_UNCOMPRESSED_R8G8B8A8;
+
+    this->_fontTexture = LoadTextureFromImage(fontImage);
+    return (ImTextureID)(intptr_t)this->_fontTexture.id;
 }
 
 void ui::ImGUILayer::_recoverVertex(ImDrawList& cmdList)
