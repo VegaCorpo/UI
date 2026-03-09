@@ -1,6 +1,7 @@
 #pragma once
 
 #include <imgui.h>
+#include <raylib.h>
 
 #include "ILayer.hpp"
 
@@ -32,6 +33,7 @@ namespace ui {
             
             // Private Attributs
             common::RenderDataBuffer _buffer;
+            Texture2D _fontTexture;
     };
 
 } // namespace ui
