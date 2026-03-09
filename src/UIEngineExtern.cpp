@@ -3,7 +3,7 @@
 #include "types/types.hpp"
 #include "UIEngine.hpp"
 
-extern "C++" {
+extern "C" {
 
     std::unique_ptr<common::IUIEngine> get_engine()
     {
