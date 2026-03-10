@@ -3,7 +3,7 @@
 #include <iostream>
 #include "imgui.h"
 
-ui::ImGUILayer::ImGUILayer()
+void ui::ImGUILayer::init(common::TextureLoader loader)
 {
     this->_isShutdown = false;
     IMGUI_CHECKVERSION();
@@ -11,18 +11,20 @@ ui::ImGUILayer::ImGUILayer()
     ImGui::StyleColorsDark();
 
     ImGuiIO& io = ImGui::GetIO();
-
-    // Create custom backends
     io.BackendPlatformName = "CustomCore";
     io.BackendRendererName = "CustomRenderer";
 
     unsigned char* pixels = nullptr;
     int width = 0, height = 0;
-    io.Fonts->SetTexID(this->uploadFontTexture(pixels, width, height));
+    io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height);
+
+    unsigned int id = loader(pixels, width, height);
+
+    io.Fonts->SetTexID((ImTextureID)(intptr_t)id);
+    this->_fontTextureId = id;
 
     io.Fonts->ClearTexData();
 
-    // Setup Global style
     this->_setupStyle();
 }
 
@@ -64,24 +66,22 @@ common::RenderDataBuffer& ui::ImGUILayer::convertToUIRenderData(ImDrawData* draw
 
 void ui::ImGUILayer::shutdown()
 {
-    UnloadTexture(this->_fontTexture);
     if (ImGui::GetCurrentContext() != nullptr)
         ImGui::DestroyContext();
     this->_isShutdown = true;
 }
 
-ImTextureID ui::ImGUILayer::uploadFontTexture(unsigned char *pixels, int width, int height)
+void ui::ImGUILayer::getFontData(unsigned char** pixels, int* width, int* height)
 {
-    Image fontImage {
-        pixels,
-        width,
-        height,
-        1,
-        PIXELFORMAT_UNCOMPRESSED_R8G8B8A8
-    };
+    ImGuiIO& io = ImGui::GetIO();
+    io.Fonts->GetTexDataAsRGBA32(pixels, width, height);
+}
 
-    this->_fontTexture = LoadTextureFromImage(fontImage);
-    return (ImTextureID)(intptr_t)this->_fontTexture.id;
+void ui::ImGUILayer::setFontTextureID(unsigned int id)
+{
+    this->_fontTextureId = id;
+    ImGuiIO& io = ImGui::GetIO();
+    io.Fonts->SetTexID((ImTextureID)(intptr_t)id);
 }
 
 void ui::ImGUILayer::_recoverVertex(ImDrawList& cmdList)

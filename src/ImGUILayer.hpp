@@ -1,7 +1,6 @@
 #pragma once
 
 #include <imgui.h>
-#include <raylib.h>
 
 #include "ILayer.hpp"
 
@@ -9,8 +8,11 @@ namespace ui {
 
     class ImGUILayer : public ui::ILayer {
         public:
-            ImGUILayer();
+            ImGUILayer() : _isShutdown(false) {};
+
             ~ImGUILayer() override { if (!this->_isShutdown) { this->shutdown(); } };
+
+            void init(common::TextureLoader loader) override;
 
             void beginFrame(float delta_time, float width, float height) override;
 
@@ -20,9 +22,9 @@ namespace ui {
 
             void shutdown() override;
 
-            // This methods is actually used for Raylib API
-            // If you are using another one, change its content according your Render API
-            ImTextureID uploadFontTexture(unsigned char *pixels, int width, int height) override;
+            void getFontData(unsigned char** pixels, int* width, int* height) override;
+
+            void setFontTextureID(unsigned int id) override;
 
         private:
 
@@ -37,8 +39,8 @@ namespace ui {
             
             // Private Attributs
             common::RenderDataBuffer _buffer;
-            Texture2D _fontTexture;
             bool _isShutdown;
+            unsigned int _fontTextureId = 0;
     };
 
 } // namespace ui

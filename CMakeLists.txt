@@ -39,7 +39,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Asan")
     endif()
 endif()
 
-add_library(imgui_core STATIC
+add_library(imgui_core SHARED
     ${CPM_PACKAGE_imgui_SOURCE_DIR}/imgui.cpp
     ${CPM_PACKAGE_imgui_SOURCE_DIR}/imgui_draw.cpp
     ${CPM_PACKAGE_imgui_SOURCE_DIR}/imgui_tables.cpp

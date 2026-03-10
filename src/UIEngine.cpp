@@ -10,12 +10,16 @@ void ui::UIEngine::update(float dt, float w, float h)
 }
 
 template<typename TLayer>
-void ui::UIEngine::_initWithLayer()
+void ui::UIEngine::_initWithLayer(common::TextureLoader loader)
 {
     static_assert(std::is_base_of_v<ui::ILayer, TLayer>,
         "TLayer must inherit from ui::ILayer");
 
-    this->_setLayer(std::make_unique<TLayer>());
+    auto layer = std::make_unique<TLayer>();
+    
+    layer->init(loader); 
+
+    this->_setLayer(std::move(layer));
 }
 
 void ui::UIEngine::_setLayer(std::unique_ptr<ui::ILayer> layer)
@@ -23,8 +27,8 @@ void ui::UIEngine::_setLayer(std::unique_ptr<ui::ILayer> layer)
     this->_layer = std::move(layer);
 }
 
-void ui::UIEngine::init()
+void ui::UIEngine::init(common::TextureLoader loader)
 {
     // Init Layer with ImGUILayer
-    this->_initWithLayer<ImGUILayer>();
+    this->_initWithLayer<ImGUILayer>(loader);
 }
