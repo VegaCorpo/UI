@@ -26,5 +26,6 @@ namespace ui {
             
             // Recover Texture ID created by the renderer
             virtual void setFontTextureID(unsigned int id) = 0;
+
     };
 } // namespace ui

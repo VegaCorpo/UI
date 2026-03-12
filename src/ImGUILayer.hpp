@@ -31,7 +31,7 @@ namespace ui {
             // Convert Methods
             void _recoverVertex(ImDrawList& cmdList);
             void _recoverIndices(ImDrawList& cmdList, uint32_t vertexOffset);
-            void _recoverCommands(ImDrawList& cmdList);
+            void _recoverCommands(ImDrawList& cmdList, uint32_t indexBaseOffset);
 
             // GUI Interface Methods
             void _setupStyle();

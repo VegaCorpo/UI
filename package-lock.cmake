@@ -10,7 +10,7 @@ CPMDeclarePackage(ImGui
 #Common
 CPMDeclarePackage(Common
     GITHUB_REPOSITORY VegaCorpo/Common
-    GIT_TAG main
+    GIT_TAG load_texture_from_pixels
     SYSTEM YES
     EXCLUDE_FROM_ALL YES
 )
