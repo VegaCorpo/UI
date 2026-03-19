@@ -12,7 +12,7 @@ namespace ui {
         public:
             ~UIEngine() = default;
 
-            void init(GLFWwindow* window) override;
+            void init(void*) override;
             
             // Update UI frame and convert it for the renderer
             void update(float dt, float w, float h) override;

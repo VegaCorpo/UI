@@ -27,9 +27,8 @@ void ui::UIEngine::_setLayer(std::unique_ptr<ui::ILayer> layer)
     this->_layer = std::move(layer);
 }
 
-void ui::UIEngine::init(GLFWwindow* window)
+void ui::UIEngine::init(void*)
 {
-    (void)window;
     // Init Layer with ImGUILayer
     // this->_initWithLayer<ImGUILayer>();
 }
