@@ -39,7 +39,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Asan")
     endif()
 endif()
 
-add_library(imgui_core STATIC
+add_library(imgui_core SHARED
     ${CPM_PACKAGE_imgui_SOURCE_DIR}/imgui.cpp
     ${CPM_PACKAGE_imgui_SOURCE_DIR}/imgui_draw.cpp
     ${CPM_PACKAGE_imgui_SOURCE_DIR}/imgui_tables.cpp
@@ -52,12 +52,16 @@ add_library(orbital_ui SHARED
     src/ImGUILayer.cpp
 )
 
-target_link_libraries(orbital_ui PRIVATE imgui_core Common)
+target_link_libraries(imgui_core PUBLIC raylib)
+
+target_link_libraries(orbital_ui PRIVATE imgui_core raylib Common)
 
 target_include_directories(imgui_core  PUBLIC )
 target_include_directories(imgui_core PUBLIC
     ${CPM_PACKAGE_imgui_SOURCE_DIR}
+    ${CPM_PACKAGE_imgui_SOURCE_DIR}/backends
     ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CPM_PACKAGE_rlImGui_SOURCE_DIR}
 )
 
 if(WIN32)

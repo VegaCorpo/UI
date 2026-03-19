@@ -12,18 +12,19 @@ namespace ui {
         public:
             ~UIEngine() = default;
 
-            void init() override;
+            void init(void*) override;
             
             // Update UI frame and convert it for the renderer
             void update(float dt, float w, float h) override;
             
             common::RenderDataBuffer getDataBuffer() override { return this->_renderBuffer; }
 
+            void render() override {}
             
         private:
 
             template<typename TLayer>
-            void _initWithLayer();
+            void _initWithLayer(common::TextureLoader loader);
             // Method to set Layer according the GUI you want to use
             void _setLayer(std::unique_ptr<ui::ILayer> layer);
             // Internal buffer containing all UI geometry and commands
