@@ -12,13 +12,14 @@ namespace ui {
         public:
             ~UIEngine() = default;
 
-            void init(common::TextureLoader loader) override;
+            void init(GLFWwindow* window) override;
             
             // Update UI frame and convert it for the renderer
             void update(float dt, float w, float h) override;
             
             common::RenderDataBuffer getDataBuffer() override { return this->_renderBuffer; }
 
+            void render() override {}
             
         private:
 
