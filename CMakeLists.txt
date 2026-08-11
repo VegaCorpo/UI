@@ -14,7 +14,6 @@ CPMUsePackageLock(package-lock.cmake)
 CPMGetPackage("ImGui")
 CPMGetPackage("Common")
 
-
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
 endif()
@@ -44,6 +43,8 @@ add_library(imgui_core SHARED
     ${CPM_PACKAGE_imgui_SOURCE_DIR}/imgui_draw.cpp
     ${CPM_PACKAGE_imgui_SOURCE_DIR}/imgui_tables.cpp
     ${CPM_PACKAGE_imgui_SOURCE_DIR}/imgui_widgets.cpp
+    ${CPM_PACKAGE_imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
+    ${CPM_PACKAGE_imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
 )
 
 add_library(orbital_ui SHARED
@@ -56,7 +57,7 @@ target_link_libraries(imgui_core PUBLIC raylib)
 
 target_link_libraries(orbital_ui PRIVATE imgui_core raylib Common)
 
-target_include_directories(imgui_core  PUBLIC )
+target_include_directories(imgui_core PUBLIC)
 target_include_directories(imgui_core PUBLIC
     ${CPM_PACKAGE_imgui_SOURCE_DIR}
     ${CPM_PACKAGE_imgui_SOURCE_DIR}/backends
