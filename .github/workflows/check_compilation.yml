@@ -21,6 +21,7 @@ jobs:
                 packages: >
                   cmake
                   libx11-dev
+                  libxrandr-dev
 
           - name: Compile Repo
             run:  |
