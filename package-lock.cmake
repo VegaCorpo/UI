@@ -24,6 +24,7 @@ CPMDeclarePackage(glfw
         "GLFW_BUILD_TESTS OFF"
         "GLFW_BUILD_DOCS OFF"
         "BUILD_SHARED_LIBS ON"
+        "GLFW_BUILD_WAYLAND OFF"
     SYSTEM YES
     EXCLUDE_FROM_ALL YES
 )
