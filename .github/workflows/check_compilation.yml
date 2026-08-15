@@ -21,7 +21,12 @@ jobs:
                 packages: >
                   cmake
                   libx11-dev
+                  libxcursor-dev
+                  libxinerama-dev
                   libxrandr-dev
+                  libxi-dev
+                  libgl1-mesa-dev
+                  libglu1-mesa-dev
 
           - name: Compile Repo
             run:  |
