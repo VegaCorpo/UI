@@ -14,6 +14,16 @@ CPMUsePackageLock(package-lock.cmake)
 CPMGetPackage("ImGui")
 CPMGetPackage("Common")
 
+
+# --- Choose Backend ---
+set(ORBITAL_UI_BACKEND "OPENGL" CACHE STRING "Backend graphique utilisé par le plugin UI")
+set_property(CACHE ORBITAL_UI_BACKEND PROPERTY STRINGS "OPENGL" "NONE")
+
+if (ORBITAL_UI_BACKEND STREQUAL "OPENGL")
+    CPMGetPackage("glfw")
+    find_package(OpenGL REQUIRED)
+endif()
+
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
 endif()
@@ -38,14 +48,21 @@ if (CMAKE_BUILD_TYPE STREQUAL "Asan")
     endif()
 endif()
 
-add_library(imgui_core SHARED
+set(IMGUI_CORE_SOURCES
     ${CPM_PACKAGE_imgui_SOURCE_DIR}/imgui.cpp
     ${CPM_PACKAGE_imgui_SOURCE_DIR}/imgui_draw.cpp
     ${CPM_PACKAGE_imgui_SOURCE_DIR}/imgui_tables.cpp
     ${CPM_PACKAGE_imgui_SOURCE_DIR}/imgui_widgets.cpp
-    ${CPM_PACKAGE_imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
-    ${CPM_PACKAGE_imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
 )
+
+if (ORBITAL_UI_BACKEND STREQUAL "OPENGL")
+    list(APPEND IMGUI_CORE_SOURCES
+        ${CPM_PACKAGE_imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
+        ${CPM_PACKAGE_imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
+    )
+endif()
+
+add_library(imgui_core SHARED ${IMGUI_CORE_SOURCES})
 
 add_library(orbital_ui SHARED
     src/UIEngineExtern.cpp
@@ -53,11 +70,13 @@ add_library(orbital_ui SHARED
     src/ImGUILayer.cpp
 )
 
-target_link_libraries(imgui_core PUBLIC raylib)
+if (ORBITAL_UI_BACKEND STREQUAL "OPENGL")
+    target_link_libraries(imgui_core PUBLIC glfw OpenGL::GL)
+    target_compile_definitions(orbital_ui PRIVATE ORBITAL_UI_BACKEND_OPENGL)
+endif()
 
-target_link_libraries(orbital_ui PRIVATE imgui_core raylib Common)
+target_link_libraries(orbital_ui PRIVATE imgui_core Common)
 
-target_include_directories(imgui_core PUBLIC)
 target_include_directories(imgui_core PUBLIC
     ${CPM_PACKAGE_imgui_SOURCE_DIR}
     ${CPM_PACKAGE_imgui_SOURCE_DIR}/backends

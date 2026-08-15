@@ -1,6 +1,15 @@
 #include "ImGUILayer.hpp"
 #include <GLFW/glfw3.h>
-#include "rlgl.h"
+#include "ImGUILayer.hpp"
+#include <GLFW/glfw3.h>
+#if defined(_WIN32)
+    #include <windows.h>
+    #include <GL/gl.h>
+#elif defined(__APPLE__)
+    #include <OpenGL/gl.h>
+#else
+    #include <GL/gl.h>
+#endif
 
 void ui::ImGUILayer::init(GLFWwindow* window)
 {
@@ -23,10 +32,6 @@ void ui::ImGUILayer::render()
 {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
-
-    ImGuiIO& io = ImGui::GetIO();
-    int renderWidth = static_cast<int>(io.DisplaySize.x);
-    int renderHeigth = static_cast<int>(io.DisplaySize.y);
 
     ImGui::NewFrame();
 
@@ -53,16 +58,18 @@ void ui::ImGUILayer::render()
         return;
     }
 
-    rlDrawRenderBatchActive();
-    rlDisableScissorTest();
-    rlDisableDepthTest();
-    rlDisableBackfaceCulling();
+    glDisable(GL_SCISSOR_TEST);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
 
-    glViewport(0, 0, renderWidth, renderHeigth);
+    int fbWidth, fbHeight;
+    glfwGetFramebufferSize(this->_window, &fbWidth, &fbHeight);
+    glViewport(0, 0, fbWidth, fbHeight);
+
     ImGui_ImplOpenGL3_RenderDrawData(drawData);
 
-    rlEnableDepthTest();
-    rlEnableBackfaceCulling();
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
 }
 
 void ui::ImGUILayer::shutdown()
