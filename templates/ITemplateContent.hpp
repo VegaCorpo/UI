@@ -24,6 +24,4 @@ namespace ui {
             virtual ~ITemplateContent() = default;
             virtual void render(GLFWwindow *window) = 0;
     };
-
-    std::unique_ptr<ITemplateContent> makeTemplateContent(templateType type, GLFWwindow *window);
 } // namespace ui
