@@ -1,15 +1,7 @@
 #include "ImGUILayer.hpp"
-#include <GLFW/glfw3.h>
-#include "ImGUILayer.hpp"
-#include <GLFW/glfw3.h>
-#if defined(_WIN32)
-    #include <windows.h>
-    #include <GL/gl.h>
-#elif defined(__APPLE__)
-    #include <OpenGL/gl.h>
-#else
-    #include <GL/gl.h>
-#endif
+#include "../templates/lib/TemplateType.hpp"
+#include "../templates/TemplateContentFactory.hpp"
+
 
 void ui::ImGUILayer::init(GLFWwindow* window)
 {
@@ -30,46 +22,8 @@ void ui::ImGUILayer::init(GLFWwindow* window)
 
 void ui::ImGUILayer::render()
 {
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-
-    ImGui::NewFrame();
-
-    ImGui::Begin("Hello, world!");
-    ImGui::Text("This is some useful text.");
-
-    static float f = 0.0f;
-    static int counter = 0;
-
-    ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-
-    if (ImGui::Button("Button")) {
-        counter++;
-    }
-
-    ImGui::SameLine();
-    ImGui::Text("counter = %d", counter);
-    ImGui::End();
-
-    ImGui::Render();
-
-    ImDrawData* drawData = ImGui::GetDrawData();
-    if (!drawData) {
-        return;
-    }
-
-    glDisable(GL_SCISSOR_TEST);
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
-
-    int fbWidth, fbHeight;
-    glfwGetFramebufferSize(this->_window, &fbWidth, &fbHeight);
-    glViewport(0, 0, fbWidth, fbHeight);
-
-    ImGui_ImplOpenGL3_RenderDrawData(drawData);
-
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
+    auto content = makeTemplateContent(templateType::DEFAULT);
+    content->render(this->_window);
 }
 
 void ui::ImGUILayer::shutdown()

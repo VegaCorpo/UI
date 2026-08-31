@@ -1,10 +1,11 @@
 #pragma once
 
-#include "ATemplateContent.hpp"
+#include "../ATemplateContent.hpp"
 
 namespace ui {
     class InfoInterfaceContent : public ATemplateContent {
-    public:
-        void render() override { /* Info interface */ };
+        public:
+            using ATemplateContent::ATemplateContent;
+            void render(GLFWwindow *window) override { /* Info interface */ };
     };
 }

@@ -5,7 +5,8 @@
 namespace ui {
     class ATemplateContent : public ITemplateContent {
         public:
+            ATemplateContent() = default;
             ~ATemplateContent() override = default;
-            void render() override;
+            void render(GLFWwindow *window) override;
     };
 }
