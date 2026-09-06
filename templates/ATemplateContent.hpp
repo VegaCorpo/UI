@@ -7,6 +7,10 @@ namespace ui {
         public:
             ATemplateContent() = default;
             ~ATemplateContent() override = default;
-            void render(GLFWwindow *window) override;
+            void renderWidgets(const char *windowTitle) override;
+
+        private:
+             float _sliderValue = 0.0f;
+            int _counter = 0;
     };
 }

@@ -22,6 +22,6 @@ namespace ui {
     class ITemplateContent {
         public:
             virtual ~ITemplateContent() = default;
-            virtual void render(GLFWwindow *window) = 0;
+            virtual void renderWidgets(const char *windowTitle) = 0;
     };
 } // namespace ui

@@ -2,8 +2,8 @@
 
 namespace ui {
         enum templateType {
-        MAIN_INTERFACE,
-        INFO_INTERFACE,
-        DEFAULT
-    };
+            MAIN_INTERFACE,
+            INFO_INTERFACE,
+            DEFAULT
+        };
 }
