@@ -33,7 +33,8 @@ namespace ui {
             unsigned int _fontTextureId = 0;
 
             // ImGUI Frame
-            std::unique_ptr<ITemplateContent> _frame1;
-            std::unique_ptr<ITemplateContent> _frame2;
+            std::unique_ptr<ITemplateContent> _context1;
+            std::unique_ptr<ITemplateContent> _infos1;
+            std::unique_ptr<ITemplateContent> _mainInterface;
     };
 } // namespace ui

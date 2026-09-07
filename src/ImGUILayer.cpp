@@ -19,8 +19,9 @@ void ui::ImGUILayer::init(GLFWwindow* window)
     bool glfw_ok = ImGui_ImplGlfw_InitForOpenGL(window, true);
     bool gl_ok = ImGui_ImplOpenGL3_Init("#version 130");
 
-    this->_frame1 = makeTemplateContent(templateType::DEFAULT);
-    this->_frame2 = makeTemplateContent(templateType::DEFAULT);
+    this->_context1 = makeTemplateContent(templateType::DEFAULT);
+    this->_infos1 = makeTemplateContent(templateType::INFO_INTERFACE);
+    this->_mainInterface = makeTemplateContent(templateType::MAIN_INTERFACE);
 }
 
 void ui::ImGUILayer::render() {
@@ -28,9 +29,9 @@ void ui::ImGUILayer::render() {
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    this->_frame1->renderWidgets("TEST 1");
-
-    this->_frame2->renderWidgets("TEST 2");
+    this->_context1->renderWidgets("Context 1");
+    this->_infos1->renderWidgets("Info 1");
+    this->_mainInterface->renderWidgets("Main Interface");
 
     ImGui::Render();
 
