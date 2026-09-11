@@ -22,6 +22,11 @@ namespace ui {
     class ITemplateContent {
         public:
             virtual ~ITemplateContent() = default;
-            virtual void renderWidgets(const char *windowTitle) = 0;
+
+            // Methods containing all informations in the interface
+            virtual void renderWidgets(const char *windowTitle,
+                                ImVec2 position,
+                                ImVec2 size,
+                                ImGuiCond condition) = 0;
     };
 } // namespace ui

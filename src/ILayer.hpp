@@ -2,9 +2,6 @@
 
 #include <GLFW/glfw3.h>
 #include "types/RenderDataBuffer.hpp"
-#include "interfaces/IUIEngine.hpp"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
 
 namespace ui {
     class ILayer {
