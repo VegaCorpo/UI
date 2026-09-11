@@ -2,6 +2,7 @@
 
 #include <imgui.h>
 #include "ILayer.hpp"
+#include "../templates/ITemplateContent.hpp"
 
 namespace ui {
     class ImGUILayer : public ui::ILayer {
@@ -30,5 +31,10 @@ namespace ui {
             GLFWwindow* _window = nullptr;
             bool _isShutdown;
             unsigned int _fontTextureId = 0;
+
+            // ImGUI Frame
+            std::unique_ptr<ITemplateContent> _context1;
+            std::unique_ptr<ITemplateContent> _infos1;
+            std::unique_ptr<ITemplateContent> _mainInterface;
     };
 } // namespace ui

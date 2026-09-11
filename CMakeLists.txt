@@ -68,6 +68,10 @@ add_library(orbital_ui SHARED
     src/UIEngineExtern.cpp
     src/UIEngine.cpp
     src/ImGUILayer.cpp
+    templates/ATemplateContent.cpp
+    templates/TemplateContentFactory.cpp
+    templates/lib/InfoInterfaceContent.cpp
+    templates/lib/MainInterfaceContent.cpp
 )
 
 if (ORBITAL_UI_BACKEND STREQUAL "OPENGL")

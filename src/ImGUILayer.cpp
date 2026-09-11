@@ -1,15 +1,7 @@
 #include "ImGUILayer.hpp"
-#include <GLFW/glfw3.h>
-#include "ImGUILayer.hpp"
-#include <GLFW/glfw3.h>
-#if defined(_WIN32)
-    #include <windows.h>
-    #include <GL/gl.h>
-#elif defined(__APPLE__)
-    #include <OpenGL/gl.h>
-#else
-    #include <GL/gl.h>
-#endif
+#include "../templates/lib/TemplateType.hpp"
+#include "../templates/TemplateContentFactory.hpp"
+#include "imgui.h"
 
 void ui::ImGUILayer::init(GLFWwindow* window)
 {
@@ -26,30 +18,34 @@ void ui::ImGUILayer::init(GLFWwindow* window)
 
     bool glfw_ok = ImGui_ImplGlfw_InitForOpenGL(window, true);
     bool gl_ok = ImGui_ImplOpenGL3_Init("#version 130");
+
+    // Recover all frame
+    this->_context1 = makeTemplateContent(templateType::DEFAULT);
+    this->_infos1 = makeTemplateContent(templateType::INFO_INTERFACE);
+    this->_mainInterface = makeTemplateContent(templateType::MAIN_INTERFACE);
 }
 
-void ui::ImGUILayer::render()
-{
+void ui::ImGUILayer::render() {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
-
     ImGui::NewFrame();
 
-    ImGui::Begin("Hello, world!");
-    ImGui::Text("This is some useful text.");
-
-    static float f = 0.0f;
-    static int counter = 0;
-
-    ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-
-    if (ImGui::Button("Button")) {
-        counter++;
-    }
-
-    ImGui::SameLine();
-    ImGui::Text("counter = %d", counter);
-    ImGui::End();
+    static const std::array<ImVec2, 2> contextOption {
+        ImVec2(210, 645),
+        ImVec2(1055, 150)
+    };
+    static const std::array<ImVec2, 2> infoOption {
+        ImVec2(1010,15),
+        ImVec2(250, 200)
+    };
+    static const std::array<ImVec2, 2> mainOption {
+        ImVec2(10, 10),
+        ImVec2(200, 1000)
+    };
+    // Render all frames
+    this->_context1->renderWidgets("Context 1", contextOption[0], contextOption[1], ImGuiCond_FirstUseEver);
+    this->_infos1->renderWidgets("Info 1", infoOption[0], infoOption[1], ImGuiCond_FirstUseEver);
+    this->_mainInterface->renderWidgets("Main Interface", mainOption[0], mainOption[1], ImGuiCond_FirstUseEver);
 
     ImGui::Render();
 
@@ -58,6 +54,7 @@ void ui::ImGUILayer::render()
         return;
     }
 
+    // All OpenGl flag
     glDisable(GL_SCISSOR_TEST);
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
