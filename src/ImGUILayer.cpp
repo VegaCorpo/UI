@@ -1,5 +1,4 @@
 #include "ImGUILayer.hpp"
-#include <vector>
 #include "../templates/lib/TemplateType.hpp"
 #include "../templates/TemplateContentFactory.hpp"
 #include "imgui.h"
