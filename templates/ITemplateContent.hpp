@@ -24,9 +24,9 @@ namespace ui {
             virtual ~ITemplateContent() = default;
 
             // Methods containing all informations in the interface
-            virtual void renderWidgets(const char *windowTitle,
-                                ImVec2 position,
-                                ImVec2 size,
+            virtual void renderWidgets(const std::string &windowTitle,
+                                const ImVec2 &position,
+                                const ImVec2 &size,
                                 ImGuiCond condition) = 0;
     };
 } // namespace ui

@@ -1,5 +1,5 @@
 #include "TemplateContentFactory.hpp"
-#include "ATemplateContent.hpp"
+#include "BaseTemplateContent.hpp"
 
 static std::unordered_map<ui::templateType, ui::ContentCreator> &registry() {
     static std::unordered_map<ui::templateType, ui::ContentCreator> instance;
@@ -15,5 +15,5 @@ std::unique_ptr<ui::ITemplateContent> ui::makeTemplateContent(templateType type)
     if (it != registry().end()) {
         return it->second();
     }
-    return std::make_unique<ATemplateContent>();
+    return std::make_unique<BaseTemplateContent>();
 }

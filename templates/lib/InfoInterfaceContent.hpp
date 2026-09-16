@@ -1,12 +1,12 @@
 #pragma once
-#include "../ATemplateContent.hpp"
+#include "BaseTemplateContent.hpp"
 
 namespace ui {
-    class InfoInterfaceContent : public ATemplateContent {
+    class InfoInterfaceContent : public BaseTemplateContent {
     public:
-        void renderWidgets(const char *windowTitle,
-                                ImVec2 position,
-                                ImVec2 size,
+        void renderWidgets(const std::string &windowTitle,
+                                const ImVec2 &position,
+                                const ImVec2 &size,
                                 ImGuiCond condition) override;
     };
 }

@@ -1,10 +1,20 @@
 #pragma once
 
 #include <imgui.h>
+#include <map>
+#include <vector>
 #include "ILayer.hpp"
-#include "../templates/ITemplateContent.hpp"
+#include "ITemplateContent.hpp"
 
 namespace ui {
+
+    struct frameContent {
+        std::unique_ptr<ITemplateContent> frame;
+        const ImVec2 position;
+        const ImVec2 size;
+        const ImGuiCond_ condition;
+    }; // frameContent
+
     class ImGUILayer : public ui::ILayer {
         public:
             ImGUILayer() : _isShutdown(false) {};
@@ -15,6 +25,7 @@ namespace ui {
                 }
             };
 
+            void guiFrameCreation();
             void init(GLFWwindow* window) override;
 
             void render() override;
@@ -33,8 +44,7 @@ namespace ui {
             unsigned int _fontTextureId = 0;
 
             // ImGUI Frame
-            std::unique_ptr<ITemplateContent> _context1;
-            std::unique_ptr<ITemplateContent> _infos1;
-            std::unique_ptr<ITemplateContent> _mainInterface;
+            std::map<std::string, frameContent> _guiFrames;
+            std::vector<std::string> _framesTitle;
     };
 } // namespace ui

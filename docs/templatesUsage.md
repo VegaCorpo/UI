@@ -20,7 +20,7 @@ The template system allows defining multiple types of independent ImGui-based gr
 This system relies on three pillars:
 
 - A **common interface** (`ITemplateContent`) that every interface must implement.
-- A **default base class** (`ATemplateContent`) that provides the default behavior.
+- A **default base class** (`BaseTemplateContent`) that provides the default behavior.
 - A **factory with a dynamic registry** (`TemplateContentFactory`) that builds the correct interface from a type, without needing to modify the factory every time a new interface is added.
 
 ---
@@ -31,7 +31,7 @@ This system relies on three pillars:
 templates/
 ├── TemplateType.hpp              # Enum of all available interface types
 ├── ITemplateContent.hpp          # Common interface shared by all interfaces
-├── ATemplateContent.hpp / .cpp   # Default interface (DEFAULT)
+├── BaseTemplateContent.hpp / .cpp   # Default interface (DEFAULT)
 ├── TemplateContentFactory.hpp    # Factory + registry declaration
 ├── TemplateContentFactory.cpp    # Factory + registry implementation
 └── lib/
@@ -77,20 +77,20 @@ public:
 
 > ⚠️ The destructor **must** be `virtual` on the base interface, otherwise destroying an object through a `std::unique_ptr<ITemplateContent>` will not correctly release the derived class's resources (undefined behavior).
 
-### `ATemplateContent.hpp` / `.cpp`
+### `BaseTemplateContent.hpp` / `.cpp`
 
 Base class implementing `ITemplateContent` and representing the **default** interface (`DEFAULT`). It is also the parent class of every custom interface located in the `lib/` folder.
 
 ```cpp
-// ATemplateContent.hpp
+// BaseTemplateContent.hpp
 #pragma once
 #include "ITemplateContent.hpp"
 
 namespace ui {
-class ATemplateContent : public ITemplateContent {
+class BaseTemplateContent : public ITemplateContent {
 public:
-    ATemplateContent() = default;
-    ~ATemplateContent() override = default;
+    BaseTemplateContent() = default;
+    ~BaseTemplateContent() override = default;
     void renderWidgets(const char *windowTitle,
                         ImVec2 position,
                         ImVec2 size,
@@ -104,10 +104,10 @@ private:
 ```
 
 ```cpp
-// ATemplateContent.cpp
-#include "ATemplateContent.hpp"
+// BaseTemplateContent.cpp
+#include "BaseTemplateContent.hpp"
 
-void ui::ATemplateContent::renderWidgets(const char *windowTitle,
+void ui::BaseTemplateContent::renderWidgets(const char *windowTitle,
                                           ImVec2 position,
                                           ImVec2 size,
                                           ImGuiCond condition) {
@@ -163,7 +163,7 @@ std::unique_ptr<ITemplateContent> makeTemplateContent(templateType type);
 
 ```cpp
 #include "TemplateContentFactory.hpp"
-#include "ATemplateContent.hpp"
+#include "BaseTemplateContent.hpp"
 
 namespace ui {
 
@@ -183,7 +183,7 @@ std::unique_ptr<ITemplateContent> makeTemplateContent(templateType type) {
     if (it != registry().end()) {
         return it->second();
     }
-    return std::make_unique<ATemplateContent>(); // Default fallback
+    return std::make_unique<BaseTemplateContent>(); // Default fallback
 }
 
 }
@@ -193,7 +193,7 @@ std::unique_ptr<ITemplateContent> makeTemplateContent(templateType type) {
 
 1. Every interface (other than `DEFAULT`) registers itself in the registry through an `AutoRegister` block (see next section).
 2. This registration happens **automatically when the program loads**, before `main()` even runs, thanks to a global variable whose constructor performs the registration.
-3. When `makeTemplateContent(type)` is called, the factory looks up the registry: if an interface has been registered for that `type`, it is built and returned; otherwise, the default interface (`ATemplateContent`) is used as a fallback.
+3. When `makeTemplateContent(type)` is called, the factory looks up the registry: if an interface has been registered for that `type`, it is built and returned; otherwise, the default interface (`BaseTemplateContent`) is used as a fallback.
 
 ---
 
@@ -218,10 +218,10 @@ enum templateType {
 ```cpp
 // lib/MainInterfaceContent.hpp
 #pragma once
-#include "../ATemplateContent.hpp"
+#include "../BaseTemplateContent.hpp"
 
 namespace ui {
-class MainInterfaceContent : public ATemplateContent {
+class MainInterfaceContent : public BaseTemplateContent {
 public:
     void renderWidgets(const char *windowTitle,
                         ImVec2 position,
@@ -411,7 +411,7 @@ ImGui::Begin(windowTitle, nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_No
 To add a new interface to the system:
 
 - Add the new type to the `templateType` enum (`TemplateType.hpp`)
-- Create the class header in `lib/`, inheriting from `ATemplateContent`
+- Create the class header in `lib/`, inheriting from `BaseTemplateContent`
 - Create the corresponding `.cpp`, implementing `renderWidgets`
 - Add the `AutoRegister` block inside an anonymous `namespace`, as a global variable in the `.cpp`
 - Verify the `.cpp` is included in `CMakeLists.txt`

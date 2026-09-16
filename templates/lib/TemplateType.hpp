@@ -1,8 +1,8 @@
 #pragma once
 
-// Enum containing all template name
+// Enum class containing all template name
 namespace ui {
-        enum templateType {
+        enum class templateType {
             MAIN_INTERFACE,
             INFO_INTERFACE,
             DEFAULT

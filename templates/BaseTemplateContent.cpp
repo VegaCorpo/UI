@@ -1,13 +1,13 @@
-#include "ATemplateContent.hpp"
+#include "BaseTemplateContent.hpp"
 
 
-void ui::ATemplateContent::renderWidgets(const char *windowTitle,
-                                ImVec2 position,
-                                ImVec2 size,
+void ui::BaseTemplateContent::renderWidgets(const std::string &windowTitle,
+                                const ImVec2 &position,
+                                const ImVec2 &size,
                                 ImGuiCond condition) {
     ImGui::SetNextWindowPos(position, condition);
     ImGui::SetNextWindowSize(size, condition);
-    ImGui::Begin(windowTitle);
+    ImGui::Begin(windowTitle.c_str());
     ImGui::Text("This is some useful text.");
 
     ImGui::SliderFloat("float", &this->_sliderValue, 0.0f, 1.0f);
