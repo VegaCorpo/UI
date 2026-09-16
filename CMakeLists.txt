@@ -68,6 +68,10 @@ add_library(orbital_ui SHARED
     src/UIEngineExtern.cpp
     src/UIEngine.cpp
     src/ImGUILayer.cpp
+    templates/BaseTemplateContent.cpp
+    templates/TemplateContentFactory.cpp
+    templates/lib/InfoInterfaceContent.cpp
+    templates/lib/MainInterfaceContent.cpp
 )
 
 if (ORBITAL_UI_BACKEND STREQUAL "OPENGL")
@@ -81,6 +85,7 @@ target_include_directories(imgui_core PUBLIC
     ${CPM_PACKAGE_imgui_SOURCE_DIR}
     ${CPM_PACKAGE_imgui_SOURCE_DIR}/backends
     ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/templates
     ${CPM_PACKAGE_rlImGui_SOURCE_DIR}
 )
 
