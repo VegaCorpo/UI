@@ -6,11 +6,8 @@
 
 void ui::ImGUILayer::guiFrameCreation() {
     this->_framesTitle.push_back(this->CONTEXT_TITLE);
-
     this->_framesTitle.push_back(this->INFO_TITLE);
-
     this->_framesTitle.push_back(this->MAIN_TITLE);
-
 
     // Recover all frame
     this->_guiFrames.emplace(
