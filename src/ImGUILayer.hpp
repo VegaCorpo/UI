@@ -46,5 +46,24 @@ namespace ui {
             // ImGUI Frame
             std::map<std::string, frameContent> _guiFrames;
             std::vector<std::string> _framesTitle;
+
+            const std::string CONTEXT_TITLE = "Context 1";
+            inline static constexpr std::array<ImVec2, 2> CONTEXT_CONTENT = {
+                ImVec2(210, 645),
+                ImVec2(1055, 150)
+            };
+
+            const std::string INFO_TITLE = "Info 1";
+            inline static constexpr std::array<ImVec2, 2> INFO_CONTENT = {
+                ImVec2(1010,15),
+                ImVec2(250, 200)
+            };
+
+            const std::string MAIN_TITLE = "Main Interface";
+            inline static constexpr std::array<ImVec2, 2> MAIN_CONTENT = {
+                ImVec2(10, 10),
+                ImVec2(200, 1000)
+            };
+
     };
 } // namespace ui

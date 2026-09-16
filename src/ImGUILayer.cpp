@@ -5,52 +5,38 @@
 #include "imgui.h"
 
 void ui::ImGUILayer::guiFrameCreation() {
-    const std::string contextTitle = "Context 1";
-    this->_framesTitle.push_back(contextTitle);
-    constexpr std::array<ImVec2, 2> contextContent = {
-        ImVec2(210, 645), 
-        ImVec2(1055, 150)
-    };
+    this->_framesTitle.push_back(this->CONTEXT_TITLE);
 
-    const std::string infoTitle = "Info 1";
-    this->_framesTitle.push_back(infoTitle);
-    constexpr std::array<ImVec2, 2> infoContent = {
-        ImVec2(1010,15),
-        ImVec2(250, 200)
-    };
+    this->_framesTitle.push_back(this->INFO_TITLE);
 
-    const std::string mainTitle = "Main Interface";
-    this->_framesTitle.push_back(mainTitle);
-    constexpr std::array<ImVec2, 2> mainContent = {
-        ImVec2(10, 10),
-        ImVec2(200, 1000)
-    };
+    this->_framesTitle.push_back(this->MAIN_TITLE);
+
 
     // Recover all frame
     this->_guiFrames.emplace(
-        contextTitle,
+        this->CONTEXT_TITLE,
         frameContent{
             makeTemplateContent(templateType::DEFAULT),
-            contextContent[0],
-            contextContent[1],
+            ImGUILayer::CONTEXT_CONTENT[0],
+            ImGUILayer::CONTEXT_CONTENT[1],
         ImGuiCond_FirstUseEver
         }
     );
     this->_guiFrames.emplace(
-        infoTitle,
+        this->INFO_TITLE,
         frameContent{
             makeTemplateContent(templateType::INFO_INTERFACE),
-            infoContent[0],
-            infoContent[1],
+            ImGUILayer::INFO_CONTENT[0],
+            ImGUILayer::INFO_CONTENT[1],
         ImGuiCond_FirstUseEver
         }
     );
     this->_guiFrames.emplace(
-        mainTitle,
+        this->MAIN_TITLE,
         frameContent{
             makeTemplateContent(templateType::MAIN_INTERFACE),
-            mainContent[0],
-            mainContent[1],
+            ImGUILayer::MAIN_CONTENT[0],
+            ImGUILayer::MAIN_CONTENT[1],
         ImGuiCond_FirstUseEver
         }
     );
