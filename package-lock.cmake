@@ -9,7 +9,7 @@ CPMDeclarePackage(ImGui
 
 # Common
 CPMDeclarePackage(Common
-    GIT_TAG feature/uiWorldStateRecovering
+    GIT_TAG 0.2.0
     GITHUB_REPOSITORY VegaCorpo/Common
     SYSTEM YES
     EXCLUDE_FROM_ALL YES
