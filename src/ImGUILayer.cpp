@@ -39,9 +39,10 @@ void ui::ImGUILayer::guiFrameCreation() {
     );
 }
 
-void ui::ImGUILayer::init(GLFWwindow* window)
+void ui::ImGUILayer::init(GLFWwindow* window, const common::SpecificDataUI &specificDataUI)
 {
     this->_window = window;
+    this->_specificDataUI = specificDataUI;
     this->_isShutdown = false;
 
     IMGUI_CHECKVERSION();

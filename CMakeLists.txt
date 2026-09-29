@@ -87,6 +87,8 @@ target_include_directories(imgui_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/templates
     ${CPM_PACKAGE_rlImGui_SOURCE_DIR}
+    ${Common_SOURCE_DIR}
+    ${Common_SOURCE_DIR}/include
 )
 
 if(WIN32)

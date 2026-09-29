@@ -4,6 +4,8 @@
 #include "ILayer.hpp"
 #include <memory>
 #include <types/RenderDataBuffer.hpp>
+#include "types/World.hpp"
+
 
 namespace ui {
 
@@ -12,10 +14,10 @@ namespace ui {
         public:
             ~UIEngine() = default;
 
-            void init(void* window) override;
+            void init(void* window, const common::SpecificDataUI &specificDataUI) override;
 
             // Update UI frame and convert it for the renderer
-            void update(float dt, float w, float h) override;
+            void update(const common::WorldState &worldState) override;
 
             common::RenderDataBuffer getDataBuffer() override { return this->_renderBuffer; }
 
