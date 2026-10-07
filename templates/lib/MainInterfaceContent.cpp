@@ -5,8 +5,7 @@
 
 void ui::MainInterfaceContent::renderWidgets(const std::string &windowTitle,
                                 const frameContent &content,
-                                worldData &data) {
-    (void)data;
+                                [[maybe_unused]] worldData &data) {
     ImGui::SetNextWindowPos(content.position, content.condition);
     ImGui::SetNextWindowSize(content.size, content.condition);
     ImGui::Begin(windowTitle.c_str());
