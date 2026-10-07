@@ -2,14 +2,13 @@
 #include "TemplateContentFactory.hpp"
 #include "TemplateType.hpp"
 #include "imgui.h"
+#include "FrameContent.hpp"
 
 void ui::InfoInterfaceContent::renderWidgets(const std::string &windowTitle,
-                                              const ImVec2 &position,
-                                              const ImVec2 &size,
-                                              ImGuiCond condition,
+                                              const frameContent &content,
                                               worldData &data) {
-    ImGui::SetNextWindowPos(position, condition);
-    ImGui::SetNextWindowSize(size, condition);
+    ImGui::SetNextWindowPos(content.position, content.condition);
+    ImGui::SetNextWindowSize(content.size, content.condition);
     ImGui::Begin(windowTitle.c_str());
 
     const auto &ids = data.specificDataUI.entitiesId;

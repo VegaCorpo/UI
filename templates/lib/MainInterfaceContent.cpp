@@ -1,15 +1,14 @@
 #include "MainInterfaceContent.hpp"
 #include "TemplateContentFactory.hpp"
 #include "TemplateType.hpp"
+#include "FrameContent.hpp"
 
 void ui::MainInterfaceContent::renderWidgets(const std::string &windowTitle,
-                                const ImVec2 &position,
-                                const ImVec2 &size,
-                                ImGuiCond condition,
+                                const frameContent &content,
                                 worldData &data) {
     (void)data;
-    ImGui::SetNextWindowPos(position, condition);
-    ImGui::SetNextWindowSize(size, condition);
+    ImGui::SetNextWindowPos(content.position, content.condition);
+    ImGui::SetNextWindowSize(content.size, content.condition);
     ImGui::Begin(windowTitle.c_str());
     ImGui::Text("Main Interface");
     ImGui::End();

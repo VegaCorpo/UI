@@ -20,15 +20,15 @@
 
 namespace ui {
 
+    struct frameContent;
+
     class ITemplateContent {
         public:
             virtual ~ITemplateContent() = default;
 
             // Methods containing all informations in the interface
             virtual void renderWidgets(const std::string &windowTitle,
-                                const ImVec2 &position,
-                                const ImVec2 &size,
-                                ImGuiCond condition,
+                                const frameContent &content,
                                 worldData &data) = 0;
     };
 } // namespace ui

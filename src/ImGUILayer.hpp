@@ -8,16 +8,11 @@
 #include "ITemplateContent.hpp"
 #include "types/World.hpp"
 #include "WorldData.hpp"
+#include "ITemplateContent.hpp"
+#include "FrameContent.hpp"
 
 
 namespace ui {
-
-    struct frameContent {
-        std::unique_ptr<ITemplateContent> frame;
-        const ImVec2 position;
-        const ImVec2 size;
-        const ImGuiCond_ condition;
-    }; // frameContent
 
     class ImGUILayer : public ui::ILayer {
         public:
