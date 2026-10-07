@@ -4,26 +4,18 @@
 #include "imgui.h"
 #include "FrameContent.hpp"
 
-void ui::InfoInterfaceContent::renderWidgets(const std::string &windowTitle,
-                                              const frameContent &content,
-                                              worldData &data) {
-    ImGui::SetNextWindowPos(content.position, content.condition);
-    ImGui::SetNextWindowSize(content.size, content.condition);
-    ImGui::Begin(windowTitle.c_str());
-
-    const auto &ids = data.specificDataUI.entitiesId;
-
-    if (ids.empty()) {
-        ImGui::TextWrapped("No entity available.");
-        ImGui::End();
-        return;
+namespace {
+        std::optional<size_t> findEntityIndex(const std::vector<size_t> &ids, size_t entityId) {
+        auto it = std::find(ids.begin(), ids.end(), entityId);
+        if (it == ids.end()) {
+            return std::nullopt;
+        }
+        return static_cast<size_t>(std::distance(ids.begin(), it));
     }
 
-    if (!_selectedEntityId.has_value() ||
-        std::find(ids.begin(), ids.end(), *_selectedEntityId) == ids.end()) {
-        _selectedEntityId = ids.front();
-    }
+}
 
+void ui::InfoInterfaceContent::selectMenu(const std::vector<size_t> &ids) {
     const std::string previewLabel = "Entity " + std::to_string(*_selectedEntityId);
     if (ImGui::BeginCombo("Entity", previewLabel.c_str())) {
         for (size_t id : ids) {
@@ -39,11 +31,9 @@ void ui::InfoInterfaceContent::renderWidgets(const std::string &windowTitle,
         }
         ImGui::EndCombo();
     }
+}
 
-    ImGui::Separator();
-
-    const size_t entityId = *_selectedEntityId;
-
+void drawEntityInfo(ui::worldData &data, const size_t entityId) {
     if (auto idx = findEntityIndex(data.specificDataUI.entitiesId, entityId); idx.has_value()) {
         ImGui::TextWrapped("Name: %s", data.specificDataUI.names[*idx].value);
         ImGui::TextWrapped("Mass: %.3f x 10^%d kg",
@@ -66,6 +56,35 @@ void ui::InfoInterfaceContent::renderWidgets(const std::string &windowTitle,
     } else {
         ImGui::TextWrapped("No physics data for this entity.");
     }
+}
+
+void ui::InfoInterfaceContent::renderWidgets(const std::string &windowTitle,
+                                              const frameContent &content,
+                                              worldData &data) {
+    ImGui::SetNextWindowPos(content.position, content.condition);
+    ImGui::SetNextWindowSize(content.size, content.condition);
+    ImGui::Begin(windowTitle.c_str());
+
+    const auto &ids = data.specificDataUI.entitiesId;
+
+    if (ids.empty()) {
+        ImGui::TextWrapped("No entity available.");
+        ImGui::End();
+        return;
+    }
+
+    if (!_selectedEntityId.has_value() ||
+        std::find(ids.begin(), ids.end(), *_selectedEntityId) == ids.end()) {
+        _selectedEntityId = ids.front();
+    }
+
+    this->selectMenu(ids);
+
+    ImGui::Separator();
+
+    const size_t entityId = *_selectedEntityId;
+
+    drawEntityInfo(data, entityId);
 
     ImGui::End();
 }

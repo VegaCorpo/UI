@@ -7,6 +7,7 @@ namespace ui {
         void renderWidgets(const std::string &windowTitle,
                                 const frameContent &content,
                                 worldData &data) override;
+        void selectMenu(const std::vector<size_t> &ids);
     private:
         std::optional<size_t> _selectedEntityId;
     };
