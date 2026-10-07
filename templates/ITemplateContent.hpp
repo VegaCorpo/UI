@@ -4,6 +4,7 @@
 #include <memory>
 #include <GLFW/glfw3.h>
 #include <imgui.h>
+#include "WorldData.hpp"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #if defined(_WIN32)
@@ -27,6 +28,7 @@ namespace ui {
             virtual void renderWidgets(const std::string &windowTitle,
                                 const ImVec2 &position,
                                 const ImVec2 &size,
-                                ImGuiCond condition) = 0;
+                                ImGuiCond condition,
+                                worldData &data) = 0;
     };
 } // namespace ui

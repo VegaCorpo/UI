@@ -10,7 +10,8 @@ namespace ui {
             void renderWidgets(const std::string &windowTitle,
                                 const ImVec2 &position,
                                 const ImVec2 &size,
-                                ImGuiCond condition) override;
+                                ImGuiCond condition,
+                                worldData &data) override;
 
         private:
             float _sliderValue = 0.0f;

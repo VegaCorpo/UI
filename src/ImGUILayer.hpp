@@ -7,6 +7,7 @@
 #include "ILayer.hpp"
 #include "ITemplateContent.hpp"
 #include "types/World.hpp"
+#include "WorldData.hpp"
 
 
 namespace ui {
@@ -31,7 +32,7 @@ namespace ui {
             void guiFrameCreation();
             void init(GLFWwindow* window, const common::SpecificDataUI &specificDataUI) override;
 
-            void updateWorldState(const common::WorldState &worldState) override { this->_worldState = worldState; }
+            void updateWorldState(const common::WorldState &worldState) override { this->_data.worldState = worldState; }
 
             void render() override;
 
@@ -71,8 +72,7 @@ namespace ui {
             };
 
             // World Data
-            common::SpecificDataUI _specificDataUI;
-            common::WorldState _worldState;
+            worldData _data;
 
     };
 } // namespace ui
