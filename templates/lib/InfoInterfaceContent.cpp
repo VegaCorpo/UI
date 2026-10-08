@@ -58,13 +58,7 @@ void drawEntityInfo(ui::worldData &data, const size_t entityId) {
     }
 }
 
-void ui::InfoInterfaceContent::renderWidgets(const std::string &windowTitle,
-                                              const frameContent &content,
-                                              worldData &data) {
-    ImGui::SetNextWindowPos(content.position, content.condition);
-    ImGui::SetNextWindowSize(content.size, content.condition);
-    ImGui::Begin(windowTitle.c_str());
-
+void ui::InfoInterfaceContent::_renderContent(worldData &data) {
     const auto &ids = data.specificDataUI.entitiesId;
 
     if (ids.empty()) {
@@ -85,8 +79,6 @@ void ui::InfoInterfaceContent::renderWidgets(const std::string &windowTitle,
     const size_t entityId = *this->_selectedEntityId;
 
     drawEntityInfo(data, entityId);
-
-    ImGui::End();
 }
 
 namespace {
