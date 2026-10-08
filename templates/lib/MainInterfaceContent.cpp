@@ -3,7 +3,7 @@
 #include "TemplateType.hpp"
 #include "FrameContent.hpp"
 
-void ui::MainInterfaceContent::renderContent([[maybe_unused]] worldData &data) {
+void ui::MainInterfaceContent::_renderContent([[maybe_unused]] worldData &data) {
     ImGui::Text("Main Interface");
 }
 

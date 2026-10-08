@@ -10,12 +10,12 @@ void ui::BaseTemplateContent::renderWidgets(const std::string &windowTitle,
     ImGui::SetNextWindowSize(content.size, content.condition);
     ImGui::Begin(windowTitle.c_str());
 
-    this->renderContent(data);
+    this->_renderContent(data);
 
     ImGui::End();
 }
 
-void ui::BaseTemplateContent::renderContent(worldData &data) {
+void ui::BaseTemplateContent::_renderContent(worldData &data) {
     ImGui::Text("This is some useful text.");
 
     ImGui::SliderFloat("float", &this->_sliderValue, 0.0f, 1.0f);

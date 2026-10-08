@@ -7,7 +7,7 @@ namespace ui {
             void selectMenu(const std::vector<size_t> &ids);
 
         private:
-            void renderContent(worldData &data) override;
+            void _renderContent(worldData &data) override;
             std::optional<size_t> _selectedEntityId;
     };
 }

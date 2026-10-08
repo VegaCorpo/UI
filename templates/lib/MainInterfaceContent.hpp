@@ -7,6 +7,6 @@
 namespace ui {
     class MainInterfaceContent : public BaseTemplateContent {
         private:
-            void renderContent(worldData &data) override;
+            void _renderContent(worldData &data) override;
     };
 }

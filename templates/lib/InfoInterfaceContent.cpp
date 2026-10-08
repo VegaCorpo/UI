@@ -58,7 +58,7 @@ void drawEntityInfo(ui::worldData &data, const size_t entityId) {
     }
 }
 
-void ui::InfoInterfaceContent::renderContent(worldData &data) {
+void ui::InfoInterfaceContent::_renderContent(worldData &data) {
     const auto &ids = data.specificDataUI.entitiesId;
 
     if (ids.empty()) {

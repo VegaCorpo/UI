@@ -13,7 +13,7 @@ namespace ui {
                                 worldData &data) final;
 
         private:
-            virtual void renderContent(worldData &data);
+            virtual void _renderContent(worldData &data);
             float _sliderValue = 0.0f;
             int _counter = 0;
     };
