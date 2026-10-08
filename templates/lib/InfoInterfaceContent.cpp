@@ -16,14 +16,14 @@ namespace {
 }
 
 void ui::InfoInterfaceContent::selectMenu(const std::vector<size_t> &ids) {
-    const std::string previewLabel = "Entity " + std::to_string(*_selectedEntityId);
+    const std::string previewLabel = "Entity " + std::to_string(*this->_selectedEntityId);
     if (ImGui::BeginCombo("Entity", previewLabel.c_str())) {
         for (size_t id : ids) {
-            bool isSelected = (id == *_selectedEntityId);
+            bool isSelected = (id == *this->_selectedEntityId);
             std::string label = "Entity " + std::to_string(id);
 
             if (ImGui::Selectable(label.c_str(), isSelected)) {
-                _selectedEntityId = id;
+                this->_selectedEntityId = id;
             }
             if (isSelected) {
                 ImGui::SetItemDefaultFocus();
@@ -73,16 +73,16 @@ void ui::InfoInterfaceContent::renderWidgets(const std::string &windowTitle,
         return;
     }
 
-    if (!_selectedEntityId.has_value() ||
-        std::find(ids.begin(), ids.end(), *_selectedEntityId) == ids.end()) {
-        _selectedEntityId = ids.front();
+    if (!this->_selectedEntityId.has_value() ||
+        std::find(ids.begin(), ids.end(), *this->_selectedEntityId) == ids.end()) {
+        this->_selectedEntityId = ids.front();
     }
 
     this->selectMenu(ids);
 
     ImGui::Separator();
 
-    const size_t entityId = *_selectedEntityId;
+    const size_t entityId = *this->_selectedEntityId;
 
     drawEntityInfo(data, entityId);
 
