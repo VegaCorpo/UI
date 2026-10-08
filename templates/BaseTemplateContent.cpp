@@ -1,12 +1,12 @@
 #include "BaseTemplateContent.hpp"
+#include "FrameContent.hpp"
 
 
 void ui::BaseTemplateContent::renderWidgets(const std::string &windowTitle,
-                                const ImVec2 &position,
-                                const ImVec2 &size,
-                                ImGuiCond condition) {
-    ImGui::SetNextWindowPos(position, condition);
-    ImGui::SetNextWindowSize(size, condition);
+                                const frameContent &content,
+                                [[maybe_unused]] worldData &data) {
+    ImGui::SetNextWindowPos(content.position, content.condition);
+    ImGui::SetNextWindowSize(content.size, content.condition);
     ImGui::Begin(windowTitle.c_str());
     ImGui::Text("This is some useful text.");
 

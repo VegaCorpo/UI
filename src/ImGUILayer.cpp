@@ -42,7 +42,7 @@ void ui::ImGUILayer::guiFrameCreation() {
 void ui::ImGUILayer::init(GLFWwindow* window, const common::SpecificDataUI &specificDataUI)
 {
     this->_window = window;
-    this->_specificDataUI = specificDataUI;
+    this->_data.specificDataUI = specificDataUI;
     this->_isShutdown = false;
 
     IMGUI_CHECKVERSION();
@@ -66,8 +66,8 @@ void ui::ImGUILayer::render() {
 
     // Render all frames
     for (auto &title : this->_framesTitle) {
-        const auto &frameContent = this->_guiFrames.find(title)->second;
-        frameContent.frame->renderWidgets(title, frameContent.position, frameContent.size, frameContent.condition);
+        const auto &content = this->_guiFrames.find(title)->second;
+        content.frame->renderWidgets(title, content, this->_data);
     }
 
     ImGui::Render();

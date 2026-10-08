@@ -7,16 +7,12 @@
 #include "ILayer.hpp"
 #include "ITemplateContent.hpp"
 #include "types/World.hpp"
+#include "WorldData.hpp"
+#include "ITemplateContent.hpp"
+#include "FrameContent.hpp"
 
 
 namespace ui {
-
-    struct frameContent {
-        std::unique_ptr<ITemplateContent> frame;
-        const ImVec2 position;
-        const ImVec2 size;
-        const ImGuiCond_ condition;
-    }; // frameContent
 
     class ImGUILayer : public ui::ILayer {
         public:
@@ -31,7 +27,7 @@ namespace ui {
             void guiFrameCreation();
             void init(GLFWwindow* window, const common::SpecificDataUI &specificDataUI) override;
 
-            void updateWorldState(const common::WorldState &worldState) override { this->_worldState = worldState; }
+            void updateWorldState(const common::WorldState &worldState) override { this->_data.worldState = worldState; }
 
             void render() override;
 
@@ -71,8 +67,7 @@ namespace ui {
             };
 
             // World Data
-            common::SpecificDataUI _specificDataUI;
-            common::WorldState _worldState;
+            worldData _data;
 
     };
 } // namespace ui
