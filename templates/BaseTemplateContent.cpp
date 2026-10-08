@@ -1,5 +1,6 @@
 #include "BaseTemplateContent.hpp"
 #include "FrameContent.hpp"
+#include "WorldData.hpp"
 
 
 void ui::BaseTemplateContent::renderWidgets(const std::string &windowTitle,
@@ -8,6 +9,13 @@ void ui::BaseTemplateContent::renderWidgets(const std::string &windowTitle,
     ImGui::SetNextWindowPos(content.position, content.condition);
     ImGui::SetNextWindowSize(content.size, content.condition);
     ImGui::Begin(windowTitle.c_str());
+
+    this->renderContent(data);
+
+    ImGui::End();
+}
+
+void ui::BaseTemplateContent::renderContent(worldData &data) {
     ImGui::Text("This is some useful text.");
 
     ImGui::SliderFloat("float", &this->_sliderValue, 0.0f, 1.0f);
@@ -17,5 +25,4 @@ void ui::BaseTemplateContent::renderWidgets(const std::string &windowTitle,
 
     ImGui::SameLine();
     ImGui::Text("counter = %d", this->_counter);
-    ImGui::End();
 }

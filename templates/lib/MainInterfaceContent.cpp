@@ -3,14 +3,8 @@
 #include "TemplateType.hpp"
 #include "FrameContent.hpp"
 
-void ui::MainInterfaceContent::renderWidgets(const std::string &windowTitle,
-                                const frameContent &content,
-                                [[maybe_unused]] worldData &data) {
-    ImGui::SetNextWindowPos(content.position, content.condition);
-    ImGui::SetNextWindowSize(content.size, content.condition);
-    ImGui::Begin(windowTitle.c_str());
+void ui::MainInterfaceContent::renderContent([[maybe_unused]] worldData &data) {
     ImGui::Text("Main Interface");
-    ImGui::End();
 }
 
 namespace {

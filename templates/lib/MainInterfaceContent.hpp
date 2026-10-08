@@ -2,12 +2,11 @@
 
 #include "BaseTemplateContent.hpp"
 #include "TemplateContentFactory.hpp"
+#include "WorldData.hpp"
 
 namespace ui {
     class MainInterfaceContent : public BaseTemplateContent {
-        public:
-            void renderWidgets(const std::string &windowTitle,
-                                const frameContent &content,
-                                worldData &data) override;
+        private:
+            void renderContent(worldData &data) override;
     };
 }
