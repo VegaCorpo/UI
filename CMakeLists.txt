@@ -72,6 +72,7 @@ add_library(orbital_ui SHARED
     templates/TemplateContentFactory.cpp
     templates/lib/InfoInterfaceContent.cpp
     templates/lib/MainInterfaceContent.cpp
+    templates/lib/TimeInterfaceContent.cpp
 )
 
 if (ORBITAL_UI_BACKEND STREQUAL "OPENGL")

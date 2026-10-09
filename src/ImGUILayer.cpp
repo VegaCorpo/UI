@@ -8,6 +8,7 @@ void ui::ImGUILayer::guiFrameCreation() {
     this->_framesTitle.push_back(this->CONTEXT_TITLE);
     this->_framesTitle.push_back(this->INFO_TITLE);
     this->_framesTitle.push_back(this->MAIN_TITLE);
+    this->_framesTitle.push_back(this->TIME_TITLE);
 
     // Recover all frame
     this->_guiFrames.emplace(
@@ -34,6 +35,15 @@ void ui::ImGUILayer::guiFrameCreation() {
             makeTemplateContent(templateType::MAIN_INTERFACE),
             ImGUILayer::MAIN_CONTENT[0],
             ImGUILayer::MAIN_CONTENT[1],
+        ImGuiCond_FirstUseEver
+        }
+    );
+    this->_guiFrames.emplace(
+        this->TIME_TITLE,
+        frameContent{
+            makeTemplateContent(templateType::TIME_INTERFACE),
+            ImGUILayer::TIME_CONTENT[0],
+            ImGUILayer::TIME_CONTENT[1],
         ImGuiCond_FirstUseEver
         }
     );
