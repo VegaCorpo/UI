@@ -8,7 +8,7 @@
 namespace ui {
 
     struct worldData {
-        common::SpecificDataUI specificDataUI;
+        common::SpecificDataUI *specificDataUI = nullptr;
         common::WorldState worldState;
     }; // worldData
 } // namespace ui

@@ -34,11 +34,11 @@ void ui::InfoInterfaceContent::selectMenu(const std::vector<size_t> &ids) {
 }
 
 void drawEntityInfo(ui::worldData &data, const size_t entityId) {
-    if (auto idx = findEntityIndex(data.specificDataUI.entitiesId, entityId); idx.has_value()) {
-        ImGui::TextWrapped("Name: %s", data.specificDataUI.names[*idx].value);
+    if (auto idx = findEntityIndex(data.specificDataUI->entitiesId, entityId); idx.has_value()) {
+        ImGui::TextWrapped("Name: %s", data.specificDataUI->names[*idx].value);
         ImGui::TextWrapped("Mass: %.3f x 10^%d kg",
-                    data.specificDataUI.masses[*idx].mantissa,
-                    data.specificDataUI.masses[*idx].exponent);
+                    data.specificDataUI->masses[*idx].mantissa,
+                    data.specificDataUI->masses[*idx].exponent);
     }
 
     if (auto idx = findEntityIndex(data.worldState.entitiesId, entityId); idx.has_value()) {
@@ -59,7 +59,7 @@ void drawEntityInfo(ui::worldData &data, const size_t entityId) {
 }
 
 void ui::InfoInterfaceContent::_renderContent(worldData &data) {
-    const auto &ids = data.specificDataUI.entitiesId;
+    const auto &ids = data.specificDataUI->entitiesId;
 
     if (ids.empty()) {
         ImGui::TextWrapped("No entity available.");

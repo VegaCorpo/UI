@@ -22,6 +22,7 @@ private:
     void _renderContent(worldData &data) override;
 
     size_t _selectedScale = 0;
+    bool _isInit = false;
 };
 
 } // namespace ui

@@ -1,7 +1,7 @@
 #include "UIEngine.hpp"
 #include "ImGUILayer.hpp"
 
-void ui::UIEngine::init(void* windowHandle, const common::SpecificDataUI &specificDataUI)
+void ui::UIEngine::init(void* windowHandle, common::SpecificDataUI &specificDataUI)
 {
     auto* window = static_cast<GLFWwindow*>(windowHandle);
     auto layer = std::make_unique<ImGUILayer>();

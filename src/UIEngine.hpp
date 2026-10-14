@@ -14,7 +14,7 @@ namespace ui {
         public:
             ~UIEngine() = default;
 
-            void init(void* window, const common::SpecificDataUI &specificDataUI) override;
+            void init(void* window, common::SpecificDataUI &specificDataUI) override;
 
             // Update UI frame and convert it for the renderer
             void update(const common::WorldState &worldState) override;
