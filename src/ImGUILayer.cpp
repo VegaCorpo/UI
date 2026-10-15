@@ -1,4 +1,5 @@
 #include "ImGUILayer.hpp"
+#include <types/World.hpp>
 #include <vector>
 #include "lib/TemplateType.hpp"
 #include "TemplateContentFactory.hpp"
@@ -8,6 +9,7 @@ void ui::ImGUILayer::guiFrameCreation() {
     this->_framesTitle.push_back(this->CONTEXT_TITLE);
     this->_framesTitle.push_back(this->INFO_TITLE);
     this->_framesTitle.push_back(this->MAIN_TITLE);
+    this->_framesTitle.push_back(this->TIME_TITLE);
 
     // Recover all frame
     this->_guiFrames.emplace(
@@ -37,9 +39,18 @@ void ui::ImGUILayer::guiFrameCreation() {
         ImGuiCond_FirstUseEver
         }
     );
+    this->_guiFrames.emplace(
+        this->TIME_TITLE,
+        frameContent{
+            makeTemplateContent(templateType::TIME_INTERFACE),
+            ImGUILayer::TIME_CONTENT[0],
+            ImGUILayer::TIME_CONTENT[1],
+        ImGuiCond_FirstUseEver
+        }
+    );
 }
 
-void ui::ImGUILayer::init(GLFWwindow* window, const common::SpecificDataUI &specificDataUI)
+void ui::ImGUILayer::init(GLFWwindow *window, const common::SpecificDataUI &specificDataUI)
 {
     this->_window = window;
     this->_data.specificDataUI = specificDataUI;

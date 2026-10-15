@@ -22,6 +22,9 @@ namespace ui {
             common::RenderDataBuffer getDataBuffer() override { return this->_renderBuffer; }
 
             void render() override;
+
+            common::SpecificDataUI publishDataUi() override;
+
         private:
 
             template<typename TLayer>
