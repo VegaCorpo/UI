@@ -1,7 +1,8 @@
 #include "UIEngine.hpp"
+#include <types/World.hpp>
 #include "ImGUILayer.hpp"
 
-void ui::UIEngine::init(void* windowHandle, common::SpecificDataUI &specificDataUI)
+void ui::UIEngine::init(void* windowHandle, const common::SpecificDataUI &specificDataUI)
 {
     auto* window = static_cast<GLFWwindow*>(windowHandle);
     auto layer = std::make_unique<ImGUILayer>();
@@ -19,4 +20,8 @@ void ui::UIEngine::render()
 void ui::UIEngine::update(const common::WorldState &worldState)
 {
     this->_layer->updateWorldState(worldState);
+}
+
+common::SpecificDataUI ui::UIEngine::publishDataUi() {
+    return this->_layer->publish();
 }

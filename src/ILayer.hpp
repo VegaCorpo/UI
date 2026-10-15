@@ -10,7 +10,7 @@ namespace ui {
             virtual ~ILayer() = default;
 
             // Init Methods
-            virtual void init(GLFWwindow* window, common::SpecificDataUI &dataUI) = 0;
+            virtual void init(GLFWwindow* window, const common::SpecificDataUI &dataUI) = 0;
 
             // Recover Worldstate Data
             virtual void updateWorldState(const common::WorldState &worldState) = 0;
@@ -20,6 +20,9 @@ namespace ui {
 
             // Shutdown / cleanup
             virtual void shutdown() = 0;
+
+            // Get all the specificDataUI
+            virtual common::SpecificDataUI publish() = 0;
 
     };
 } // namespace ui

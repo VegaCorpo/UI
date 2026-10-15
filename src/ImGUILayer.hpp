@@ -25,13 +25,15 @@ namespace ui {
             };
 
             void guiFrameCreation();
-            void init(GLFWwindow* window, common::SpecificDataUI &specificDataUI) override;
+            void init(GLFWwindow* window, const common::SpecificDataUI &specificDataUI) override;
 
             void updateWorldState(const common::WorldState &worldState) override { this->_data.worldState = worldState; }
 
             void render() override;
 
             void shutdown() override;
+
+            common::SpecificDataUI publish() override { return _data.specificDataUI; }
 
         private:
             // GUI Interface Methods

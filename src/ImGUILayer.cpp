@@ -1,4 +1,5 @@
 #include "ImGUILayer.hpp"
+#include <types/World.hpp>
 #include <vector>
 #include "lib/TemplateType.hpp"
 #include "TemplateContentFactory.hpp"
@@ -49,10 +50,10 @@ void ui::ImGUILayer::guiFrameCreation() {
     );
 }
 
-void ui::ImGUILayer::init(GLFWwindow *window, common::SpecificDataUI &specificDataUI)
+void ui::ImGUILayer::init(GLFWwindow *window, const common::SpecificDataUI &specificDataUI)
 {
     this->_window = window;
-    this->_data.specificDataUI = &specificDataUI;
+    this->_data.specificDataUI = specificDataUI;
     this->_isShutdown = false;
 
     IMGUI_CHECKVERSION();
@@ -70,10 +71,6 @@ void ui::ImGUILayer::init(GLFWwindow *window, common::SpecificDataUI &specificDa
 }
 
 void ui::ImGUILayer::render() {
-
-    if (this->_data.specificDataUI == nullptr) {
-        return;
-    }
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
