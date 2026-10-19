@@ -22,7 +22,7 @@ namespace ui {
             virtual void shutdown() = 0;
 
             // Get all the specificDataUI
-            virtual common::SpecificDataUI publish() = 0;
+            virtual const common::SpecificDataUI &publish() = 0;
 
     };
 } // namespace ui

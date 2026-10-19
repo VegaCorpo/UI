@@ -23,7 +23,7 @@ namespace ui {
 
             void render() override;
 
-            common::SpecificDataUI publishDataUi() override;
+            const common::SpecificDataUI &publishDataUi() override;
 
         private:
 

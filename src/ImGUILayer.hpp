@@ -33,7 +33,7 @@ namespace ui {
 
             void shutdown() override;
 
-            common::SpecificDataUI publish() override { return _data.specificDataUI; }
+            const common::SpecificDataUI &publish() override { return _data.specificDataUI; }
 
         private:
             // GUI Interface Methods

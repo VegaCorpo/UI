@@ -1,7 +1,7 @@
 #pragma once
 
 #include <array>
-#include "../BaseTemplateContent.hpp"
+#include "BaseTemplateContent.hpp"
 
 namespace ui {
 

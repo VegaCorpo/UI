@@ -22,6 +22,6 @@ void ui::UIEngine::update(const common::WorldState &worldState)
     this->_layer->updateWorldState(worldState);
 }
 
-common::SpecificDataUI ui::UIEngine::publishDataUi() {
+const common::SpecificDataUI &ui::UIEngine::publishDataUi() {
     return this->_layer->publish();
 }
