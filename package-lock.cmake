@@ -9,7 +9,7 @@ CPMDeclarePackage(ImGui
 
 # Common
 CPMDeclarePackage(Common
-    GIT_TAG v0.3.0
+    GIT_TAG v0.3.3
     GITHUB_REPOSITORY VegaCorpo/Common
     SYSTEM YES
     EXCLUDE_FROM_ALL YES

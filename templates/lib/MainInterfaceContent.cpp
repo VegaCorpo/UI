@@ -54,7 +54,6 @@ void ui::MainInterfaceContent::_renderContent([[maybe_unused]] worldData &data) 
     }
 }
 
-
 namespace {
     struct AutoRegister {
         AutoRegister() {
