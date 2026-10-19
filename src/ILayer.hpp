@@ -21,5 +21,8 @@ namespace ui {
             // Shutdown / cleanup
             virtual void shutdown() = 0;
 
+            // Get all the specificDataUI
+            virtual const common::SpecificDataUI &publish() = 0;
+
     };
 } // namespace ui

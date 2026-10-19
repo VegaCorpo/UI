@@ -8,5 +8,9 @@ namespace ui {
     class MainInterfaceContent : public BaseTemplateContent {
         private:
             void _renderContent(worldData &data) override;
+
+            void _renderFileTab();
+            void _renderMenuTab();
+            void _renderHelpTab();
     };
 }

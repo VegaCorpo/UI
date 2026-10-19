@@ -33,6 +33,8 @@ namespace ui {
 
             void shutdown() override;
 
+            const common::SpecificDataUI &publish() override { return _data.specificDataUI; }
+
         private:
             // GUI Interface Methods
             void _setupStyle();
@@ -64,6 +66,12 @@ namespace ui {
             inline static constexpr std::array<ImVec2, 2> MAIN_CONTENT = {
                 ImVec2(10, 10),
                 ImVec2(200, 1000)
+            };
+
+            const std::string TIME_TITLE = "Time Interface";
+            inline static constexpr std::array<ImVec2, 2> TIME_CONTENT = {
+                ImVec2(220, 10),
+                ImVec2(410, 120)
             };
 
             // World Data
