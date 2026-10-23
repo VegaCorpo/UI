@@ -1,8 +1,10 @@
 #include "InfoInterfaceContent.hpp"
+#include <cstddef>
 #include "TemplateContentFactory.hpp"
 #include "TemplateType.hpp"
 #include "imgui.h"
 #include "FrameContent.hpp"
+
 
 namespace {
         std::optional<size_t> findEntityIndex(const std::vector<size_t> &ids, size_t entityId) {
@@ -15,15 +17,15 @@ namespace {
 
 }
 
-void ui::InfoInterfaceContent::selectMenu(const std::vector<size_t> &ids) {
+void ui::InfoInterfaceContent::selectMenu(const std::vector<size_t> &ids, ui::worldData &data) {
     const std::string previewLabel = "Entity " + std::to_string(*this->_selectedEntityId);
     if (ImGui::BeginCombo("Entity", previewLabel.c_str())) {
         for (size_t id : ids) {
             bool isSelected = (id == *this->_selectedEntityId);
             std::string label = "Entity " + std::to_string(id);
-
             if (ImGui::Selectable(label.c_str(), isSelected)) {
                 this->_selectedEntityId = id;
+                data.specificDataUI.camFocusEnt = id;
             }
             if (isSelected) {
                 ImGui::SetItemDefaultFocus();
@@ -72,7 +74,7 @@ void ui::InfoInterfaceContent::_renderContent(worldData &data) {
         this->_selectedEntityId = ids.front();
     }
 
-    this->selectMenu(ids);
+    this->selectMenu(ids, data);
 
     ImGui::Separator();
 
