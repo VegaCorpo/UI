@@ -4,7 +4,7 @@
 namespace ui {
     class InfoInterfaceContent : public BaseTemplateContent {
         public:
-            void selectMenu(const std::vector<size_t> &ids);
+            void selectMenu(const std::vector<size_t> &ids, ui::worldData &data);
 
         private:
             void _renderContent(worldData &data) override;
