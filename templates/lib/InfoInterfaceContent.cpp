@@ -5,7 +5,6 @@
 #include "imgui.h"
 #include "FrameContent.hpp"
 
-
 namespace {
         std::optional<size_t> findEntityIndex(const std::vector<size_t> &ids, size_t entityId) {
         auto it = std::find(ids.begin(), ids.end(), entityId);
