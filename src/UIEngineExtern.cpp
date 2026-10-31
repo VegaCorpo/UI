@@ -16,13 +16,12 @@ extern "C" {
         return common::ModuleType::UI;
     }
 
-    const common::ModuleInfo* get_module_info()
+    common::ModuleInfo get_module_info()
     {
-        static constexpr common::ModuleInfo info{
+        return {
             .name = ORBITAL_MODULE_NAME,
             .version = ORBITAL_MODULE_VERSION,
             .type = common::ModuleType::UI,
         };
-        return &info;
     }
 }
