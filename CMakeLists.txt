@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(orbital_ui)
+project(orbital_ui VERSION 0.1.0)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
@@ -81,6 +81,11 @@ if (ORBITAL_UI_BACKEND STREQUAL "OPENGL")
 endif()
 
 target_link_libraries(orbital_ui PRIVATE imgui_core Common)
+
+target_compile_definitions(orbital_ui PRIVATE
+    ORBITAL_MODULE_NAME="${PROJECT_NAME}"
+    ORBITAL_MODULE_VERSION="${PROJECT_VERSION}"
+)
 
 target_include_directories(imgui_core PUBLIC
     ${CPM_PACKAGE_imgui_SOURCE_DIR}
