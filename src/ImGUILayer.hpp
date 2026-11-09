@@ -10,6 +10,7 @@
 #include "WorldData.hpp"
 #include "ITemplateContent.hpp"
 #include "FrameContent.hpp"
+#include "EntityPreset.hpp"
 
 
 namespace ui {
@@ -76,6 +77,9 @@ namespace ui {
 
             // World Data
             worldData _data;
+
+            std::vector<EntityPreset> _presets;
+            inline static const std::string PRESETS_PATH = "presets/entity_preset.json";
 
     };
 } // namespace ui

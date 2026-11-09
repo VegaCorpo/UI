@@ -2,8 +2,6 @@
 #include <components/mass.hpp>
 #include "FrameContent.hpp"
 #include "WorldData.hpp"
-#include "preset/Preset.hpp"
-
 #include <cfloat>
 #include <type_traits>
 
@@ -86,9 +84,9 @@ void inputQuat(const char *label, Q &q) {
 
 void ui::BaseTemplateContent::_renderContent(worldData &data) {
     ImGui::TextUnformatted("Preset");
-    for (const auto &preset : common::presets::PRESET) {
-        if (ImGui::Selectable(preset.label)) {
-            data.specificDataUI.entityAsked = common::EntitySpawnRequest::fromPreset(preset);
+    for (const auto &preset : *data.presets) {
+        if (ImGui::Selectable(preset.label.c_str())) {
+            data.specificDataUI.entityAsked = makeSpawnRequest(preset);
         }
     }
 

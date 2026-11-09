@@ -73,12 +73,21 @@ add_library(orbital_ui SHARED
     templates/lib/InfoInterfaceContent.cpp
     templates/lib/MainInterfaceContent.cpp
     templates/lib/TimeInterfaceContent.cpp
+    preset/PresetLoader.cpp
+)
+
+target_compile_definitions(orbital_ui PRIVATE
+    ORBITAL_MODULE_NAME="${PROJECT_NAME}"
+    ORBITAL_MODULE_VERSION="${PROJECT_VERSION}"
 )
 
 if (ORBITAL_UI_BACKEND STREQUAL "OPENGL")
     target_link_libraries(imgui_core PUBLIC glfw OpenGL::GL)
     target_compile_definitions(orbital_ui PRIVATE ORBITAL_UI_BACKEND_OPENGL)
 endif()
+
+CPMAddPackage("gh:nlohmann/json@3.11.3")
+target_link_libraries(orbital_ui PRIVATE nlohmann_json::nlohmann_json)
 
 target_link_libraries(orbital_ui PRIVATE imgui_core Common)
 
@@ -87,6 +96,7 @@ target_include_directories(imgui_core PUBLIC
     ${CPM_PACKAGE_imgui_SOURCE_DIR}/backends
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/templates
+    ${CMAKE_CURRENT_SOURCE_DIR}/preset
     ${CPM_PACKAGE_rlImGui_SOURCE_DIR}
     ${Common_SOURCE_DIR}
     ${Common_SOURCE_DIR}/include
