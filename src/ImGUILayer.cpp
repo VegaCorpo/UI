@@ -4,6 +4,7 @@
 #include "lib/TemplateType.hpp"
 #include "TemplateContentFactory.hpp"
 #include "imgui.h"
+#include "PresetLoader.hpp"
 
 void ui::ImGUILayer::guiFrameCreation() {
     this->_framesTitle.push_back(this->CONTEXT_TITLE);
@@ -55,6 +56,9 @@ void ui::ImGUILayer::init(GLFWwindow *window, const common::SpecificDataUI &spec
     this->_window = window;
     this->_data.specificDataUI = specificDataUI;
     this->_isShutdown = false;
+
+    this->_presets = loadPresets(PRESETS_PATH);
+    this->_data.presets = &this->_presets;
 
     IMGUI_CHECKVERSION();
 
