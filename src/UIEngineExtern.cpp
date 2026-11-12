@@ -23,7 +23,7 @@ extern "C" {
         return {
             .name = ORBITAL_MODULE_NAME,
             .version = ORBITAL_MODULE_VERSION,
-            .type = common::ModuleType::LOADER,
+            .type = common::ModuleType::UI,
         };
     }
 }
