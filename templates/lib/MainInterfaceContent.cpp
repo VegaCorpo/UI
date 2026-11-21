@@ -3,6 +3,7 @@
 #include "TemplateContentFactory.hpp"
 #include "TemplateType.hpp"
 #include "FrameContent.hpp"
+#include "imgui.h"
 
 void ui::MainInterfaceContent::_renderFileTab() {
     if (ImGui::CollapsingHeader("Project")) {
@@ -23,12 +24,29 @@ void ui::MainInterfaceContent::_renderFileTab() {
     }
 }
 
-void ui::MainInterfaceContent::_renderMenuTab() {
+void ui::MainInterfaceContent::_renderMenuTab(worldData &data)
+{
+    ImGui::Spacing();
+
+    ImGui::SeparatorText("Mode");
+    ImGui::Checkbox("Edit Mode", &data.isEditMode);
+    ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyleColorVec4(ImGuiCol_TextDisabled));
+    ImGui::TextWrapped("Open editing scene interface and allows adding entities to the scene.");
+    ImGui::PopStyleColor();
+
+    ImGui::Spacing();
+    ImGui::SeparatorText("Settings");
+
     if (ImGui::CollapsingHeader("Scene")) {
+        ImGui::Indent();
         ImGui::TextDisabled("TODO");
+        ImGui::Unindent();
     }
+
     if (ImGui::CollapsingHeader("Layout")) {
+        ImGui::Indent();
         ImGui::TextDisabled("TODO");
+        ImGui::Unindent();
     }
 }
 
@@ -36,14 +54,14 @@ void ui::MainInterfaceContent::_renderHelpTab() {
     ImGui::TextDisabled("Nothing here yet.");
 }
 
-void ui::MainInterfaceContent::_renderContent([[maybe_unused]] worldData &data) {
+void ui::MainInterfaceContent::_renderContent(worldData &data) {
     if (ImGui::BeginTabBar("main_tabs")) {
         if (ImGui::BeginTabItem("File")) {
             this->_renderFileTab();
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Menu")) {
-            this->_renderMenuTab();
+            this->_renderMenuTab(data);
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Help")) {

@@ -51,10 +51,10 @@ namespace ui {
             std::map<std::string, frameContent> _guiFrames;
             std::vector<std::string> _framesTitle;
 
-            const std::string CONTEXT_TITLE = "Context 1";
+            const std::string CONTEXT_TITLE = "Edition Menu";
             inline static constexpr std::array<ImVec2, 2> CONTEXT_CONTENT = {
-                ImVec2(210, 645),
-                ImVec2(1055, 150)
+                ImVec2(213, 528),
+                ImVec2(1057, 266)
             };
 
             const std::string INFO_TITLE = "Info 1";

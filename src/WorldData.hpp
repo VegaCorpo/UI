@@ -12,5 +12,6 @@ namespace ui {
         common::SpecificDataUI specificDataUI;
         common::WorldState worldState;
         const std::vector<EntityPreset> *presets = nullptr;
+        bool isEditMode = false;
     }; // worldData
 } // namespace ui

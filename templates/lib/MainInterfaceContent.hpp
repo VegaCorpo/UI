@@ -10,7 +10,7 @@ namespace ui {
             void _renderContent(worldData &data) override;
 
             void _renderFileTab();
-            void _renderMenuTab();
+            void _renderMenuTab(worldData &data);
             void _renderHelpTab();
     };
 }

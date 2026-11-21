@@ -81,6 +81,8 @@ void ui::ImGUILayer::render() {
 
     // Render all frames
     for (auto &title : this->_framesTitle) {
+        if (title == this->CONTEXT_TITLE && !this->_data.isEditMode)
+            continue;
         const auto &content = this->_guiFrames.find(title)->second;
         content.frame->renderWidgets(title, content, this->_data);
     }
