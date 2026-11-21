@@ -27,13 +27,19 @@ void ui::MainInterfaceContent::_renderFileTab() {
 void ui::MainInterfaceContent::_renderMenuTab(worldData &data)
 {
     ImGui::Spacing();
-
+    // Mode
     ImGui::SeparatorText("Mode");
     ImGui::Checkbox("Edit Mode", &data.isEditMode);
     ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyleColorVec4(ImGuiCol_TextDisabled));
     ImGui::TextWrapped("Open editing scene interface and allows adding entities to the scene.");
     ImGui::PopStyleColor();
 
+    // Filter
+    ImGui::SeparatorText("Interface Filter");
+    ImGui::Checkbox("Information Interface", &data.isInfoActivate);
+    ImGui::Checkbox("Time Interface", &data.isTimeActivate);
+
+    // Settings
     ImGui::Spacing();
     ImGui::SeparatorText("Settings");
 

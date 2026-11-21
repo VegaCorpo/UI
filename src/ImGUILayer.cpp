@@ -74,6 +74,16 @@ void ui::ImGUILayer::init(GLFWwindow *window, const common::SpecificDataUI &spec
     this->guiFrameCreation();
 }
 
+bool ui::ImGUILayer::filterRender(const std::basic_string<char> &title) {
+    if (title == this->CONTEXT_TITLE && !this->_data.isEditMode)
+        return false;
+    if (title == this->INFO_TITLE && !this->_data.isInfoActivate)
+        return false;
+    if (title == this->TIME_TITLE && !this->_data.isTimeActivate)
+        return false;
+    return true;
+}
+
 void ui::ImGUILayer::render() {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
@@ -81,7 +91,7 @@ void ui::ImGUILayer::render() {
 
     // Render all frames
     for (auto &title : this->_framesTitle) {
-        if (title == this->CONTEXT_TITLE && !this->_data.isEditMode)
+        if (!filterRender(title))
             continue;
         const auto &content = this->_guiFrames.find(title)->second;
         content.frame->renderWidgets(title, content, this->_data);

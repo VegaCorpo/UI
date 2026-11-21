@@ -30,7 +30,11 @@ namespace ui {
 
             void updateWorldState(const common::WorldState &worldState) override { this->_data.worldState = worldState; }
 
+            // Methods containing rendering condition
+            bool filterRender(const std::basic_string<char> &title);
+
             void render() override;
+
 
             void shutdown() override;
 

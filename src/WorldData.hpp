@@ -13,5 +13,7 @@ namespace ui {
         common::WorldState worldState;
         const std::vector<EntityPreset> *presets = nullptr;
         bool isEditMode = false;
+        bool isInfoActivate = true;
+        bool isTimeActivate = false;
     }; // worldData
 } // namespace ui
