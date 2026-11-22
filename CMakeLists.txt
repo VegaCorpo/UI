@@ -68,6 +68,7 @@ add_library(orbital_ui SHARED
     src/UIEngineExtern.cpp
     src/UIEngine.cpp
     src/ImGUILayer.cpp
+    src/VisibilitySettings.cpp
     templates/BaseTemplateContent.cpp
     templates/TemplateContentFactory.cpp
     templates/lib/InfoInterfaceContent.cpp

@@ -6,50 +6,31 @@
 #include "TemplateContentFactory.hpp"
 #include "imgui.h"
 #include "PresetLoader.hpp"
+#include "VisibilitySettings.hpp"
+
+#include <optional>
 
 void ui::ImGUILayer::guiFrameCreation() {
-    this->_framesTitle.push_back(ui::layoutInterface::editionWindow.title);
-    this->_framesTitle.push_back(ui::layoutInterface::infoWindow.title);
-    this->_framesTitle.push_back(ui::layoutInterface::mainWindow.title);
-    this->_framesTitle.push_back(ui::layoutInterface::timeWindow.title);
+    auto add = [this](const auto &window, templateType type, std::optional<bool> defaultVisible) {
+        this->_framesTitle.push_back(window.title);
+        if (defaultVisible.has_value()) {
+            this->_data.windowVisible.emplace(std::string(window.title), *defaultVisible);
+        }
+        this->_guiFrames.emplace(
+            window.title,
+            frameContent{
+                makeTemplateContent(type),
+                window.position,
+                window.size,
+                ImGuiCond_FirstUseEver
+            }
+        );
+    };
 
-    // Recover all frame
-    this->_guiFrames.emplace(
-        ui::layoutInterface::editionWindow.title,
-        frameContent{
-            makeTemplateContent(templateType::DEFAULT),
-            ui::layoutInterface::editionWindow.position,
-            ui::layoutInterface::editionWindow.size,
-        ImGuiCond_FirstUseEver
-        }
-    );
-    this->_guiFrames.emplace(
-        ui::layoutInterface::infoWindow.title,
-        frameContent{
-            makeTemplateContent(templateType::INFO_INTERFACE),
-            ui::layoutInterface::infoWindow.position,
-            ui::layoutInterface::infoWindow.size,
-        ImGuiCond_FirstUseEver
-        }
-    );
-    this->_guiFrames.emplace(
-        ui::layoutInterface::mainWindow.title,
-        frameContent{
-            makeTemplateContent(templateType::MAIN_INTERFACE),
-            ui::layoutInterface::mainWindow.position,
-            ui::layoutInterface::mainWindow.size,
-        ImGuiCond_FirstUseEver
-        }
-    );
-    this->_guiFrames.emplace(
-        ui::layoutInterface::timeWindow.title,
-        frameContent{
-            makeTemplateContent(templateType::TIME_INTERFACE),
-            ui::layoutInterface::timeWindow.position,
-            ui::layoutInterface::timeWindow.size,
-        ImGuiCond_FirstUseEver
-        }
-    );
+    add(layoutInterface::mainWindow,    templateType::MAIN_INTERFACE, std::nullopt);
+    add(layoutInterface::editionWindow, templateType::DEFAULT,        true);
+    add(layoutInterface::infoWindow,    templateType::INFO_INTERFACE, true);
+    add(layoutInterface::timeWindow,    templateType::TIME_INTERFACE, false);
 }
 
 void ui::ImGUILayer::init(GLFWwindow *window, const common::SpecificDataUI &specificDataUI)
@@ -73,16 +54,12 @@ void ui::ImGUILayer::init(GLFWwindow *window, const common::SpecificDataUI &spec
     bool gl_ok = ImGui_ImplOpenGL3_Init("#version 130");
 
     this->guiFrameCreation();
+    registerVisibilitySettings(this->_data.windowVisible);
 }
 
 bool ui::ImGUILayer::filterRender(const std::string_view &title) {
-    if (title == ui::layoutInterface::editionWindow.title && !this->_data.isEditMode)
-        return false;
-    if (title == ui::layoutInterface::infoWindow.title && !this->_data.isInfoActivate)
-        return false;
-    if (title == ui::layoutInterface::timeWindow.title && !this->_data.isTimeActivate)
-        return false;
-    return true;
+    const auto it = this->_data.windowVisible.find(title);
+    return it == this->_data.windowVisible.end() || it->second;
 }
 
 void ui::ImGUILayer::renderFrames() {

@@ -3,6 +3,7 @@
 #include "TemplateContentFactory.hpp"
 #include "TemplateType.hpp"
 #include "FrameContent.hpp"
+#include <imgui_internal.h>
 
 void ui::MainInterfaceContent::_renderFileTab() {
     if (ImGui::CollapsingHeader("Project")) {
@@ -35,8 +36,14 @@ void ui::MainInterfaceContent::_renderMenuTab(worldData &data)
 
     // Filter
     ImGui::SeparatorText("Interface Filter");
-    ImGui::Checkbox("Information Interface", &data.isInfoActivate);
-    ImGui::Checkbox("Time Interface", &data.isTimeActivate);
+    for (auto &[title, visible] : data.windowVisible) {
+        if (ImGui::Checkbox(title.c_str(), &visible)) {
+            ImGui::MarkIniSettingsDirty();
+            if (const char *ini = ImGui::GetIO().IniFilename) {
+                ImGui::SaveIniSettingsToDisk(ini);
+            }
+        }
+    }
 
     // Settings
     ImGui::Spacing();
