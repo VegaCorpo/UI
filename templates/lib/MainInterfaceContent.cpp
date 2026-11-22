@@ -3,7 +3,6 @@
 #include "TemplateContentFactory.hpp"
 #include "TemplateType.hpp"
 #include "FrameContent.hpp"
-#include "imgui.h"
 
 void ui::MainInterfaceContent::_renderFileTab() {
     if (ImGui::CollapsingHeader("Project")) {

@@ -12,7 +12,7 @@ namespace ui {
         common::SpecificDataUI specificDataUI;
         common::WorldState worldState;
         const std::vector<EntityPreset> *presets = nullptr;
-        bool isEditMode = false;
+        bool isEditMode = true;
         bool isInfoActivate = true;
         bool isTimeActivate = false;
     }; // worldData

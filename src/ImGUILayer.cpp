@@ -1,4 +1,5 @@
 #include "ImGUILayer.hpp"
+#include <string_view>
 #include <types/World.hpp>
 #include <vector>
 #include "lib/TemplateType.hpp"
@@ -7,45 +8,45 @@
 #include "PresetLoader.hpp"
 
 void ui::ImGUILayer::guiFrameCreation() {
-    this->_framesTitle.push_back(this->CONTEXT_TITLE);
-    this->_framesTitle.push_back(this->INFO_TITLE);
-    this->_framesTitle.push_back(this->MAIN_TITLE);
-    this->_framesTitle.push_back(this->TIME_TITLE);
+    this->_framesTitle.push_back(ui::layoutInterface::editionWindow.title);
+    this->_framesTitle.push_back(ui::layoutInterface::infoWindow.title);
+    this->_framesTitle.push_back(ui::layoutInterface::mainWindow.title);
+    this->_framesTitle.push_back(ui::layoutInterface::timeWindow.title);
 
     // Recover all frame
     this->_guiFrames.emplace(
-        this->CONTEXT_TITLE,
+        ui::layoutInterface::editionWindow.title,
         frameContent{
             makeTemplateContent(templateType::DEFAULT),
-            ImGUILayer::CONTEXT_CONTENT[0],
-            ImGUILayer::CONTEXT_CONTENT[1],
+            ui::layoutInterface::editionWindow.position,
+            ui::layoutInterface::editionWindow.size,
         ImGuiCond_FirstUseEver
         }
     );
     this->_guiFrames.emplace(
-        this->INFO_TITLE,
+        ui::layoutInterface::infoWindow.title,
         frameContent{
             makeTemplateContent(templateType::INFO_INTERFACE),
-            ImGUILayer::INFO_CONTENT[0],
-            ImGUILayer::INFO_CONTENT[1],
+            ui::layoutInterface::infoWindow.position,
+            ui::layoutInterface::infoWindow.size,
         ImGuiCond_FirstUseEver
         }
     );
     this->_guiFrames.emplace(
-        this->MAIN_TITLE,
+        ui::layoutInterface::mainWindow.title,
         frameContent{
             makeTemplateContent(templateType::MAIN_INTERFACE),
-            ImGUILayer::MAIN_CONTENT[0],
-            ImGUILayer::MAIN_CONTENT[1],
+            ui::layoutInterface::mainWindow.position,
+            ui::layoutInterface::mainWindow.size,
         ImGuiCond_FirstUseEver
         }
     );
     this->_guiFrames.emplace(
-        this->TIME_TITLE,
+        ui::layoutInterface::timeWindow.title,
         frameContent{
             makeTemplateContent(templateType::TIME_INTERFACE),
-            ImGUILayer::TIME_CONTENT[0],
-            ImGUILayer::TIME_CONTENT[1],
+            ui::layoutInterface::timeWindow.position,
+            ui::layoutInterface::timeWindow.size,
         ImGuiCond_FirstUseEver
         }
     );
@@ -74,14 +75,23 @@ void ui::ImGUILayer::init(GLFWwindow *window, const common::SpecificDataUI &spec
     this->guiFrameCreation();
 }
 
-bool ui::ImGUILayer::filterRender(const std::basic_string<char> &title) {
-    if (title == this->CONTEXT_TITLE && !this->_data.isEditMode)
+bool ui::ImGUILayer::filterRender(const std::string_view &title) {
+    if (title == ui::layoutInterface::editionWindow.title && !this->_data.isEditMode)
         return false;
-    if (title == this->INFO_TITLE && !this->_data.isInfoActivate)
+    if (title == ui::layoutInterface::infoWindow.title && !this->_data.isInfoActivate)
         return false;
-    if (title == this->TIME_TITLE && !this->_data.isTimeActivate)
+    if (title == ui::layoutInterface::timeWindow.title && !this->_data.isTimeActivate)
         return false;
     return true;
+}
+
+void ui::ImGUILayer::renderFrames() {
+    for (auto &title : this->_framesTitle) {
+        if (!this->filterRender(title))
+            continue;
+        const auto &content = this->_guiFrames.find(title)->second;
+        content.frame->renderWidgets(title, content, this->_data);
+    }
 }
 
 void ui::ImGUILayer::render() {
@@ -89,13 +99,7 @@ void ui::ImGUILayer::render() {
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    // Render all frames
-    for (auto &title : this->_framesTitle) {
-        if (!filterRender(title))
-            continue;
-        const auto &content = this->_guiFrames.find(title)->second;
-        content.frame->renderWidgets(title, content, this->_data);
-    }
+    this->renderFrames();
 
     ImGui::Render();
 

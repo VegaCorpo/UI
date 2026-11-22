@@ -8,39 +8,65 @@
 
 namespace {
 
-// Lock icon as a button. Returns true when clicked.
 bool lockButton(const char *id, bool &locked)
 {
-    const float s = ImGui::GetFrameHeight();
-    const ImVec2 p = ImGui::GetCursorScreenPos();
+    constexpr float hoverRounding = 4.0f;
+    constexpr float bodyRounding = 2.0f;
+    constexpr float strokeThickness = 1.8f;
 
-    const bool clicked = ImGui::InvisibleButton(id, ImVec2(s, s));
+    constexpr float bodyTopRatio = 0.48f;
+    constexpr float bodyBottomRatio = 0.82f;
+    constexpr float bodyLeftRatio = 0.25f;
+    constexpr float bodyRightRatio = 0.75f;
+
+    constexpr float shackleRadiusRatio = 0.17f;
+    constexpr float shackleCenterXRatio = 0.5f;
+    constexpr float shackleLiftRatio = 0.14f;
+    constexpr float shackleStartAngle = IM_PI;
+    constexpr float shackleEndAngle = 2.0f * IM_PI;
+    constexpr int shackleArcSegments = 12;
+
+    const float buttonSize = ImGui::GetFrameHeight();
+    const ImVec2 topLeft = ImGui::GetCursorScreenPos();
+    const ImVec2 bottomRight = ImVec2(topLeft.x + buttonSize, topLeft.y + buttonSize);
+
+    const bool clicked = ImGui::InvisibleButton(id, ImVec2(buttonSize, buttonSize));
     if (clicked) {
         locked = !locked;
     }
 
-    ImDrawList *draw = ImGui::GetWindowDrawList();
+    ImDrawList *drawList = ImGui::GetWindowDrawList();
     if (ImGui::IsItemHovered()) {
-        draw->AddRectFilled(p, ImVec2(p.x + s, p.y + s),
-                            ImGui::GetColorU32(ImGuiCol_ButtonHovered), 4.0f);
+        drawList->AddRectFilled(topLeft, bottomRight,
+                                ImGui::GetColorU32(ImGuiCol_ButtonHovered), hoverRounding);
     }
 
-    const ImU32 col = ImGui::GetColorU32(ImGuiCol_Text);
-    const float bodyTop = p.y + 0.48f * s;
+    const ImU32 iconColor = ImGui::GetColorU32(ImGuiCol_Text);
+    const float bodyTop = topLeft.y + bodyTopRatio * buttonSize;
+    const float bodyBottom = topLeft.y + bodyBottomRatio * buttonSize;
+    const float bodyLeft = topLeft.x + bodyLeftRatio * buttonSize;
+    const float bodyRight = topLeft.x + bodyRightRatio * buttonSize;
 
-    // body of the lock
-    draw->AddRectFilled(ImVec2(p.x + 0.25f * s, bodyTop),
-                        ImVec2(p.x + 0.75f * s, p.y + 0.82f * s), col, 2.0f);
+    drawList->AddRectFilled(ImVec2(bodyLeft, bodyTop),
+                            ImVec2(bodyRight, bodyBottom), iconColor, bodyRounding);
 
-    // shackle: closed when locked, lifted and open on the right when unlocked
-    const float r = 0.17f * s;
-    const float cx = p.x + 0.5f * s;
-    const float cy = bodyTop - (locked ? 0.0f : 0.14f * s);
-    draw->PathArcTo(ImVec2(cx, cy), r, IM_PI, 2.0f * IM_PI, 12);
-    draw->PathStroke(col, 0, 1.8f);
-    draw->AddLine(ImVec2(cx - r, cy), ImVec2(cx - r, bodyTop), col, 1.8f);
+    const float shackleRadius = shackleRadiusRatio * buttonSize;
+    const float shackleCenterX = topLeft.x + shackleCenterXRatio * buttonSize;
+    const float shackleLift = locked ? 0.0f : shackleLiftRatio * buttonSize;
+    const float shackleCenterY = bodyTop - shackleLift;
+
+    drawList->PathArcTo(ImVec2(shackleCenterX, shackleCenterY), shackleRadius,
+                        shackleStartAngle, shackleEndAngle, shackleArcSegments);
+    drawList->PathStroke(iconColor, 0, strokeThickness);
+
+    const float shackleLeftX = shackleCenterX - shackleRadius;
+    const float shackleRightX = shackleCenterX + shackleRadius;
+    drawList->AddLine(ImVec2(shackleLeftX, shackleCenterY),
+                      ImVec2(shackleLeftX, bodyTop), iconColor, strokeThickness);
+
     if (locked) {
-        draw->AddLine(ImVec2(cx + r, cy), ImVec2(cx + r, bodyTop), col, 1.8f);
+        drawList->AddLine(ImVec2(shackleRightX, shackleCenterY),
+                          ImVec2(shackleRightX, bodyTop), iconColor, strokeThickness);
     }
 
     return clicked;
@@ -56,19 +82,18 @@ void ui::BaseTemplateContent::renderWidgets(const std::string &windowTitle,
     ImGui::Begin(windowTitle.c_str(), nullptr, this->lockBtn());
 
     ImGuiWindow *window = ImGui::GetCurrentWindow();
-    if (!window->SkipItems) {   // false when the window is collapsed
+    if (!window->SkipItems) {
         const ImRect titleBar = window->TitleBarRect();
         const float s = ImGui::GetFrameHeight();
         const ImVec2 savedCursor = ImGui::GetCursorScreenPos();
 
-        // By default, drawing and clicks are clipped to the content area
         ImGui::PushClipRect(titleBar.Min, titleBar.Max, false);
         ImGui::SetCursorScreenPos(ImVec2(titleBar.Max.x - s - ImGui::GetStyle().FramePadding.x,
                                          titleBar.Min.y));
         lockButton("##lock", this->_locked);
         ImGui::PopClipRect();
 
-        ImGui::SetCursorScreenPos(savedCursor);   // the content starts where it should
+        ImGui::SetCursorScreenPos(savedCursor);
     }
 
     this->_renderContent(data);
