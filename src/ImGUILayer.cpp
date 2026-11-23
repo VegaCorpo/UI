@@ -1,54 +1,36 @@
 #include "ImGUILayer.hpp"
+#include <string_view>
 #include <types/World.hpp>
 #include <vector>
 #include "lib/TemplateType.hpp"
 #include "TemplateContentFactory.hpp"
 #include "imgui.h"
 #include "PresetLoader.hpp"
+#include "VisibilitySettings.hpp"
+
+#include <optional>
 
 void ui::ImGUILayer::guiFrameCreation() {
-    this->_framesTitle.push_back(this->CONTEXT_TITLE);
-    this->_framesTitle.push_back(this->INFO_TITLE);
-    this->_framesTitle.push_back(this->MAIN_TITLE);
-    this->_framesTitle.push_back(this->TIME_TITLE);
+    auto add = [this](const auto &window, templateType type, std::optional<bool> defaultVisible) {
+        this->_framesTitle.push_back(window.title);
+        if (defaultVisible.has_value()) {
+            this->_data.windowVisible.emplace(std::string(window.title), *defaultVisible);
+        }
+        this->_guiFrames.emplace(
+            window.title,
+            frameContent{
+                makeTemplateContent(type),
+                window.position,
+                window.size,
+                ImGuiCond_FirstUseEver
+            }
+        );
+    };
 
-    // Recover all frame
-    this->_guiFrames.emplace(
-        this->CONTEXT_TITLE,
-        frameContent{
-            makeTemplateContent(templateType::DEFAULT),
-            ImGUILayer::CONTEXT_CONTENT[0],
-            ImGUILayer::CONTEXT_CONTENT[1],
-        ImGuiCond_FirstUseEver
-        }
-    );
-    this->_guiFrames.emplace(
-        this->INFO_TITLE,
-        frameContent{
-            makeTemplateContent(templateType::INFO_INTERFACE),
-            ImGUILayer::INFO_CONTENT[0],
-            ImGUILayer::INFO_CONTENT[1],
-        ImGuiCond_FirstUseEver
-        }
-    );
-    this->_guiFrames.emplace(
-        this->MAIN_TITLE,
-        frameContent{
-            makeTemplateContent(templateType::MAIN_INTERFACE),
-            ImGUILayer::MAIN_CONTENT[0],
-            ImGUILayer::MAIN_CONTENT[1],
-        ImGuiCond_FirstUseEver
-        }
-    );
-    this->_guiFrames.emplace(
-        this->TIME_TITLE,
-        frameContent{
-            makeTemplateContent(templateType::TIME_INTERFACE),
-            ImGUILayer::TIME_CONTENT[0],
-            ImGUILayer::TIME_CONTENT[1],
-        ImGuiCond_FirstUseEver
-        }
-    );
+    add(layoutInterface::mainWindow,    templateType::MAIN_INTERFACE, std::nullopt);
+    add(layoutInterface::editionWindow, templateType::DEFAULT,        true);
+    add(layoutInterface::infoWindow,    templateType::INFO_INTERFACE, true);
+    add(layoutInterface::timeWindow,    templateType::TIME_INTERFACE, false);
 }
 
 void ui::ImGUILayer::init(GLFWwindow *window, const common::SpecificDataUI &specificDataUI)
@@ -72,6 +54,21 @@ void ui::ImGUILayer::init(GLFWwindow *window, const common::SpecificDataUI &spec
     bool gl_ok = ImGui_ImplOpenGL3_Init("#version 130");
 
     this->guiFrameCreation();
+    registerVisibilitySettings(this->_data.windowVisible);
+}
+
+bool ui::ImGUILayer::filterRender(const std::string_view &title) {
+    const auto it = this->_data.windowVisible.find(title);
+    return it == this->_data.windowVisible.end() || it->second;
+}
+
+void ui::ImGUILayer::renderFrames() {
+    for (auto &title : this->_framesTitle) {
+        if (!this->filterRender(title))
+            continue;
+        const auto &content = this->_guiFrames.find(title)->second;
+        content.frame->renderWidgets(title, content, this->_data);
+    }
 }
 
 void ui::ImGUILayer::render() {
@@ -79,11 +76,7 @@ void ui::ImGUILayer::render() {
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    // Render all frames
-    for (auto &title : this->_framesTitle) {
-        const auto &content = this->_guiFrames.find(title)->second;
-        content.frame->renderWidgets(title, content, this->_data);
-    }
+    this->renderFrames();
 
     ImGui::Render();
 

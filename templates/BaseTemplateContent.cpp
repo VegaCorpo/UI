@@ -4,13 +4,97 @@
 #include "WorldData.hpp"
 #include <cfloat>
 #include <type_traits>
+#include <imgui_internal.h>
+
+namespace {
+
+bool lockButton(const char *id, bool &locked)
+{
+    constexpr float hoverRounding = 4.0f;
+    constexpr float bodyRounding = 2.0f;
+    constexpr float strokeThickness = 1.8f;
+
+    constexpr float bodyTopRatio = 0.48f;
+    constexpr float bodyBottomRatio = 0.82f;
+    constexpr float bodyLeftRatio = 0.25f;
+    constexpr float bodyRightRatio = 0.75f;
+
+    constexpr float shackleRadiusRatio = 0.17f;
+    constexpr float shackleCenterXRatio = 0.5f;
+    constexpr float shackleLiftRatio = 0.14f;
+    constexpr float shackleStartAngle = IM_PI;
+    constexpr float shackleEndAngle = 2.0f * IM_PI;
+    constexpr int shackleArcSegments = 12;
+
+    const float buttonSize = ImGui::GetFrameHeight();
+    const ImVec2 topLeft = ImGui::GetCursorScreenPos();
+    const ImVec2 bottomRight = ImVec2(topLeft.x + buttonSize, topLeft.y + buttonSize);
+
+    const bool clicked = ImGui::InvisibleButton(id, ImVec2(buttonSize, buttonSize));
+    if (clicked) {
+        locked = !locked;
+    }
+
+    ImDrawList *drawList = ImGui::GetWindowDrawList();
+    if (ImGui::IsItemHovered()) {
+        drawList->AddRectFilled(topLeft, bottomRight,
+                                ImGui::GetColorU32(ImGuiCol_ButtonHovered), hoverRounding);
+    }
+
+    const ImU32 iconColor = ImGui::GetColorU32(ImGuiCol_Text);
+    const float bodyTop = topLeft.y + bodyTopRatio * buttonSize;
+    const float bodyBottom = topLeft.y + bodyBottomRatio * buttonSize;
+    const float bodyLeft = topLeft.x + bodyLeftRatio * buttonSize;
+    const float bodyRight = topLeft.x + bodyRightRatio * buttonSize;
+
+    drawList->AddRectFilled(ImVec2(bodyLeft, bodyTop),
+                            ImVec2(bodyRight, bodyBottom), iconColor, bodyRounding);
+
+    const float shackleRadius = shackleRadiusRatio * buttonSize;
+    const float shackleCenterX = topLeft.x + shackleCenterXRatio * buttonSize;
+    const float shackleLift = locked ? 0.0f : shackleLiftRatio * buttonSize;
+    const float shackleCenterY = bodyTop - shackleLift;
+
+    drawList->PathArcTo(ImVec2(shackleCenterX, shackleCenterY), shackleRadius,
+                        shackleStartAngle, shackleEndAngle, shackleArcSegments);
+    drawList->PathStroke(iconColor, 0, strokeThickness);
+
+    const float shackleLeftX = shackleCenterX - shackleRadius;
+    const float shackleRightX = shackleCenterX + shackleRadius;
+    drawList->AddLine(ImVec2(shackleLeftX, shackleCenterY),
+                      ImVec2(shackleLeftX, bodyTop), iconColor, strokeThickness);
+
+    if (locked) {
+        drawList->AddLine(ImVec2(shackleRightX, shackleCenterY),
+                          ImVec2(shackleRightX, bodyTop), iconColor, strokeThickness);
+    }
+
+    return clicked;
+}
+
+} // namespace
 
 void ui::BaseTemplateContent::renderWidgets(const std::string &windowTitle,
                                 const frameContent &content,
                                 [[maybe_unused]] worldData &data) {
     ImGui::SetNextWindowPos(content.position, content.condition);
     ImGui::SetNextWindowSize(content.size, content.condition);
-    ImGui::Begin(windowTitle.c_str());
+    ImGui::Begin(windowTitle.c_str(), nullptr, this->lockBtn());
+
+    ImGuiWindow *window = ImGui::GetCurrentWindow();
+    if (!window->SkipItems) {
+        const ImRect titleBar = window->TitleBarRect();
+        const float s = ImGui::GetFrameHeight();
+        const ImVec2 savedCursor = ImGui::GetCursorScreenPos();
+
+        ImGui::PushClipRect(titleBar.Min, titleBar.Max, false);
+        ImGui::SetCursorScreenPos(ImVec2(titleBar.Max.x - s - ImGui::GetStyle().FramePadding.x,
+                                         titleBar.Min.y));
+        lockButton("##lock", this->_locked);
+        ImGui::PopClipRect();
+
+        ImGui::SetCursorScreenPos(savedCursor);
+    }
 
     this->_renderContent(data);
 

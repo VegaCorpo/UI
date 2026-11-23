@@ -11,10 +11,15 @@ namespace ui {
             void renderWidgets(const std::string &windowTitle,
                                 const frameContent &content,
                                 worldData &data) final;
+            ImGuiWindowFlags lockBtn() {
+                const ImGuiWindowFlags flags = this->_locked
+                ? (ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse)
+                : ImGuiWindowFlags_None;
+                return flags;
+            }
 
         private:
             virtual void _renderContent(worldData &data);
-            float _sliderValue = 0.0f;
-            int _counter = 0;
+            bool _locked = false;
     };
 }
