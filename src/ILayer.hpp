@@ -1,6 +1,8 @@
 #pragma once
 
 #include <GLFW/glfw3.h>
+#include <queue>
+#include "types/BodyPatch.hpp"
 #include "types/World.hpp"
 #include "types/RenderDataBuffer.hpp"
 
@@ -23,6 +25,9 @@ namespace ui {
 
             // Get all the specificDataUI
             virtual const common::SpecificDataUI &publish() = 0;
+
+            // Body edits made since the last call
+            virtual std::queue<common::BodyPatch> pollEdits() = 0;
 
     };
 } // namespace ui

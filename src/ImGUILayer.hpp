@@ -4,15 +4,14 @@
 #include <imgui.h>
 #include <map>
 #include <string>
+#include <utility>
 #include <vector>
+#include "EntityPreset.hpp"
+#include "FrameContent.hpp"
 #include "ILayer.hpp"
 #include "ITemplateContent.hpp"
 #include "types/World.hpp"
 #include "WorldData.hpp"
-#include "ITemplateContent.hpp"
-#include "FrameContent.hpp"
-#include "EntityPreset.hpp"
-
 
 namespace ui {
 
@@ -80,9 +79,12 @@ namespace ui {
             };
 
             void guiFrameCreation();
-            void init(GLFWwindow* window, const common::SpecificDataUI &specificDataUI) override;
+            void init(GLFWwindow* window, const common::SpecificDataUI& specificDataUI) override;
 
-            void updateWorldState(const common::WorldState &worldState) override { this->_data.worldState = worldState; }
+            void updateWorldState(const common::WorldState& worldState) override
+            {
+                this->_data.worldState = worldState;
+            }
 
             bool filterRender(const std::string_view &title);
 
@@ -93,7 +95,9 @@ namespace ui {
 
             void shutdown() override;
 
-            const common::SpecificDataUI &publish() override { return _data.specificDataUI; }
+            const common::SpecificDataUI& publish() override { return _data.specificDataUI; }
+
+            std::queue<common::BodyPatch> pollEdits() override { return std::exchange(this->_data.edits, {}); }
 
         private:
             // GUI Interface Methods
@@ -110,11 +114,22 @@ namespace ui {
             std::map<std::string, frameContent> _guiFrames;
             std::vector<std::string> _framesTitle;
 
+            const std::string CONTEXT_TITLE = "Context 1";
+            inline static constexpr std::array<ImVec2, 2> CONTEXT_CONTENT = {ImVec2(210, 645), ImVec2(1055, 150)};
+
+            const std::string INFO_TITLE = "Info 1";
+            inline static constexpr std::array<ImVec2, 2> INFO_CONTENT = {ImVec2(1010, 15), ImVec2(250, 200)};
+
+            const std::string MAIN_TITLE = "Main Interface";
+            inline static constexpr std::array<ImVec2, 2> MAIN_CONTENT = {ImVec2(10, 10), ImVec2(200, 1000)};
+
+            const std::string TIME_TITLE = "Time Interface";
+            inline static constexpr std::array<ImVec2, 2> TIME_CONTENT = {ImVec2(220, 10), ImVec2(410, 120)};
+
             // World Data
             worldData _data;
 
             std::vector<EntityPreset> _presets;
             inline static const std::string PRESETS_PATH = "presets/entity_preset.json";
-
     };
 } // namespace ui
