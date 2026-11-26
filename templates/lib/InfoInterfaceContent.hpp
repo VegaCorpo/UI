@@ -5,7 +5,7 @@ namespace ui {
     class InfoInterfaceContent : public BaseTemplateContent {
         public:
             void selectMenu(const std::vector<size_t> &ids, ui::worldData &data);
-
+            bool cameraButton(const char* id, bool& enabled, ui::worldData &data);
         private:
             void _renderContent(worldData &data) override;
             std::optional<size_t> _selectedEntityId;

@@ -1,5 +1,6 @@
 #include "InfoInterfaceContent.hpp"
 #include <cstddef>
+#include <cstdint>
 #include "TemplateContentFactory.hpp"
 #include "TemplateType.hpp"
 #include "imgui.h"
@@ -16,9 +17,91 @@ namespace {
 
 }
 
+bool ui::InfoInterfaceContent::cameraButton(const char* id, bool& enabled, ui::worldData &data)
+{
+    constexpr float hoverRounding = 4.0f;
+    constexpr float strokeThickness = 2.0f;
+
+    const float buttonSize = ImGui::GetFrameHeight();
+    const ImVec2 topLeft = ImGui::GetCursorScreenPos();
+    const ImVec2 bottomRight = ImVec2(
+        topLeft.x + buttonSize,
+        topLeft.y + buttonSize
+    );
+
+    const bool clicked = ImGui::InvisibleButton(
+        id, ImVec2(buttonSize, buttonSize)
+    );
+
+    if (clicked)
+        enabled = !enabled;
+
+    ImDrawList* drawList = ImGui::GetWindowDrawList();
+
+    if (ImGui::IsItemHovered())
+    {
+        drawList->AddRectFilled(
+            topLeft,
+            bottomRight,
+            ImGui::GetColorU32(ImGuiCol_ButtonHovered),
+            hoverRounding
+        );
+    }
+
+    const ImU32 iconColor = ImGui::GetColorU32(ImGuiCol_Text);
+
+    const float cx = topLeft.x + buttonSize * 0.46f;
+    const float cy = topLeft.y + buttonSize * 0.50f;
+
+    const float bodyLeft = topLeft.x + buttonSize * 0.18f;
+    const float bodyRight = topLeft.x + buttonSize * 0.65f;
+    const float bodyTop = topLeft.y + buttonSize * 0.30f;
+    const float bodyBottom = topLeft.y + buttonSize * 0.70f;
+
+    drawList->AddRect(
+        ImVec2(bodyLeft, bodyTop),
+        ImVec2(bodyRight, bodyBottom),
+        iconColor,
+        2.0f,
+        0,
+        strokeThickness
+    );
+
+    drawList->AddTriangle(
+        ImVec2(bodyRight, topLeft.y + buttonSize * 0.38f),
+        ImVec2(topLeft.x + buttonSize * 0.88f, topLeft.y + buttonSize * 0.24f),
+        ImVec2(topLeft.x + buttonSize * 0.88f, topLeft.y + buttonSize * 0.76f),
+        iconColor,
+        strokeThickness
+    );
+
+    if (!enabled)
+    {
+        drawList->AddLine(
+            ImVec2(topLeft.x + buttonSize * 0.15f,
+                   topLeft.y + buttonSize * 0.85f),
+            ImVec2(topLeft.x + buttonSize * 0.85f,
+                   topLeft.y + buttonSize * 0.15f),
+            iconColor,
+            strokeThickness
+        );
+        this->_selectedEntityId = SIZE_MAX;
+        data.specificDataUI.camFocusEnt = SIZE_MAX;
+    }
+
+    return clicked;
+}
+
 void ui::InfoInterfaceContent::selectMenu(const std::vector<size_t> &ids, ui::worldData &data) {
     const std::string previewLabel = "Entity " + std::to_string(*this->_selectedEntityId);
-    if (ImGui::BeginCombo("Entity", previewLabel.c_str())) {
+    
+    static bool cameraEnabled = false;
+
+    cameraButton("##Camera", cameraEnabled, data);
+
+    ImGui::SameLine();
+
+    if (ImGui::BeginCombo("", previewLabel.c_str())) {
         for (size_t id : ids) {
             bool isSelected = (id == *this->_selectedEntityId);
             std::string label = "Entity " + std::to_string(id);
@@ -80,6 +163,12 @@ void ui::InfoInterfaceContent::_renderContent(worldData &data) {
     const size_t entityId = *this->_selectedEntityId;
 
     drawEntityInfo(data, entityId);
+
+    if (ImGui::Button("Delete"))
+    {
+        // TO DO
+        data.specificDataUI.entityToDelete = entityId;
+    }
 }
 
 namespace {
