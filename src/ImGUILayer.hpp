@@ -4,15 +4,14 @@
 #include <imgui.h>
 #include <map>
 #include <string>
+#include <utility>
 #include <vector>
+#include "EntityPreset.hpp"
+#include "FrameContent.hpp"
 #include "ILayer.hpp"
 #include "ITemplateContent.hpp"
 #include "types/World.hpp"
 #include "WorldData.hpp"
-#include "ITemplateContent.hpp"
-#include "FrameContent.hpp"
-#include "EntityPreset.hpp"
-
 
 namespace ui {
 
@@ -80,9 +79,12 @@ namespace ui {
             };
 
             void guiFrameCreation();
-            void init(GLFWwindow* window, const common::SpecificDataUI &specificDataUI) override;
+            void init(GLFWwindow* window, const common::SpecificDataUI& specificDataUI) override;
 
-            void updateWorldState(const common::WorldState &worldState) override { this->_data.worldState = worldState; }
+            void updateWorldState(const common::WorldState& worldState) override
+            {
+                this->_data.worldState = worldState;
+            }
 
             bool filterRender(const std::string_view &title);
 
@@ -93,7 +95,11 @@ namespace ui {
 
             void shutdown() override;
 
-            const common::SpecificDataUI &publish() override { return _data.specificDataUI; }
+            const common::SpecificDataUI& publish() override { return _data.specificDataUI; }
+
+            std::queue<common::BodyPatch> pollEdits() override { return std::exchange(this->_data.edits, {}); }
+
+            void updateBodies(const common::SpecificDataUI &bodies) override;
 
         private:
             // GUI Interface Methods
@@ -115,6 +121,5 @@ namespace ui {
 
             std::vector<EntityPreset> _presets;
             inline static const std::string PRESETS_PATH = "presets/entity_preset.json";
-
     };
 } // namespace ui

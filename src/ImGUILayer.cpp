@@ -1,5 +1,6 @@
 #include "ImGUILayer.hpp"
 #include <string_view>
+#include <algorithm>
 #include <types/World.hpp>
 #include <vector>
 #include "lib/TemplateType.hpp"
@@ -98,6 +99,17 @@ void ui::ImGUILayer::render() {
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+}
+
+void ui::ImGUILayer::updateBodies(const common::SpecificDataUI &bodies)
+{
+    common::SpecificDataUI &data = this->_data.specificDataUI;
+
+    data.entitiesId = bodies.entitiesId;
+    data.names = bodies.names;
+    data.masses = bodies.masses;
+    if (data.camFocusEnt != SIZE_MAX && std::ranges::find(data.entitiesId, data.camFocusEnt) == data.entitiesId.end())
+        data.camFocusEnt = SIZE_MAX;
 }
 
 void ui::ImGUILayer::shutdown()

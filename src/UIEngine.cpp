@@ -25,3 +25,16 @@ void ui::UIEngine::update(const common::WorldState &worldState)
 const common::SpecificDataUI &ui::UIEngine::publishDataUi() {
     return this->_layer->publish();
 }
+
+std::queue<common::BodyPatch> ui::UIEngine::pollEdits()
+{
+    if (!this->_layer)
+        return {};
+    return this->_layer->pollEdits();
+}
+
+void ui::UIEngine::updateBodies(const common::SpecificDataUI &bodies)
+{
+    if (this->_layer)
+        this->_layer->updateBodies(bodies);
+}
