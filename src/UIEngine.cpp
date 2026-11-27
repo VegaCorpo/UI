@@ -32,3 +32,9 @@ std::queue<common::BodyPatch> ui::UIEngine::pollEdits()
         return {};
     return this->_layer->pollEdits();
 }
+
+void ui::UIEngine::updateBodies(const common::SpecificDataUI &bodies)
+{
+    if (this->_layer)
+        this->_layer->updateBodies(bodies);
+}

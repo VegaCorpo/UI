@@ -27,6 +27,8 @@ namespace ui {
 
             std::queue<common::BodyPatch> pollEdits() override;
 
+            void updateBodies(const common::SpecificDataUI &bodies) override;
+
         private:
 
             template<typename TLayer>

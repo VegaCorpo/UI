@@ -99,6 +99,8 @@ namespace ui {
 
             std::queue<common::BodyPatch> pollEdits() override { return std::exchange(this->_data.edits, {}); }
 
+            void updateBodies(const common::SpecificDataUI &bodies) override;
+
         private:
             // GUI Interface Methods
             void _setupStyle();

@@ -29,5 +29,6 @@ namespace ui {
             // Body edits made since the last call
             virtual std::queue<common::BodyPatch> pollEdits() = 0;
 
+            virtual void updateBodies(const common::SpecificDataUI &bodies) = 0;
     };
 } // namespace ui
